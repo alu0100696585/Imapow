@@ -27,10 +27,10 @@ public class ImageClass {
     
     public ImageClass(String path){  //CONSTRUCTOR:Carga la imagen de la ruta seleccionada
    
-        image = new byte[length*width];
         colorValues = new int[255];
         
         try{
+            //Convertir imagen a array de bytes
             BufferedImage imagen2 = ImageIO.read(new File(path)); 
             ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
             ImageIO.write(imagen2, "png", baos); 
@@ -66,24 +66,36 @@ public class ImageClass {
     
     
     
-    public int get_pos(int x, int y){ //Devuelve la posicion de la imagen de coordenadas XY
+    public int getPos(int x, int y){ //Devuelve la posicion de la imagen de coordenadas XY
         return (x-1)*img_size+y-1;
     }
     
     
     
-    public int get_size(){  // Devuelve tamaño de imagen
+    public int getSize(){  // Devuelve tamaño de imagen
         return img_size;
     }
     
     
-    public int get_length(){  // Devuelve largo de la imagen
+    public int getLength(){  // Devuelve largo de la imagen
         return length;
     }
     
     
-    public int get_width(){  // Devuelve ancho de la imagen
+    public int getWidth(){  // Devuelve ancho de la imagen
         return width;
     }
     
+    
+    public void updateImage(){ //Recoge todas las funciones necesarias que actualicen una imagen
+        getColorValues();
+        //Otras funciones que hagan falta mas adelante//
+    }
+        
+        
+    public void showHistogram(){ // Muestra el histograma de color de la imagen
+        
+    }
+    
+
 }
