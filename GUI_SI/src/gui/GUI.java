@@ -5,6 +5,9 @@
  */
 package gui;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author God
@@ -30,6 +33,7 @@ public class GUI extends javax.swing.JFrame {
         menu_gui = new javax.swing.JMenuBar();
         Archivo = new javax.swing.JMenu();
         Cargar = new javax.swing.JMenuItem();
+        Salir = new javax.swing.JMenuItem();
         Opciones = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -46,6 +50,14 @@ public class GUI extends javax.swing.JFrame {
         });
         Archivo.add(Cargar);
 
+        Salir.setText("Salir");
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
+            }
+        });
+        Archivo.add(Salir);
+
         menu_gui.add(Archivo);
 
         Opciones.setText("Opciones");
@@ -58,10 +70,24 @@ public class GUI extends javax.swing.JFrame {
 
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
-       
-      new LoadFileWindow().setVisible(true);
+      JFileChooser file = new JFileChooser();
+     
+      int returnVal = file.showOpenDialog(this);
+      if (returnVal == file.APPROVE_OPTION) {
+          File file1 = file.getSelectedFile();
+          System.out.println(file1.getAbsolutePath() );
+      }
+      else{
+          System.out.println("");
+      }
+      
 
+      
     }//GEN-LAST:event_CargarActionPerformed
+
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -102,6 +128,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu Archivo;
     private javax.swing.JMenuItem Cargar;
     private javax.swing.JMenu Opciones;
+    private javax.swing.JMenuItem Salir;
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
 }
