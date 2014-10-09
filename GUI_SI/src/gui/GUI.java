@@ -69,17 +69,20 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
-        // TODO add your handling code here:
+      // TODO add your handling code here:
       JFileChooser file = new JFileChooser();
      
       int returnVal = file.showOpenDialog(this);
       if (returnVal == file.APPROVE_OPTION) {
           File file1 = file.getSelectedFile();
-          System.out.println(file1.getAbsolutePath() );
+          System.out.println(file1.getAbsolutePath());
       }
       else{
           System.out.println("");
-      }
+      }      
+      
+      new VentanaImagen().setVisible(true);///dudoso
+ 
       
 
       
@@ -87,6 +90,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         // TODO add your handling code here:
+        System.exit(1);
     }//GEN-LAST:event_SalirActionPerformed
 
     /**
