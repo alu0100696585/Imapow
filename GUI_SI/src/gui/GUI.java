@@ -5,14 +5,27 @@
  */
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.LayoutManager;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author God
  */
 public class GUI extends javax.swing.JFrame {
+
+    private BufferedImage imageActual;
 
     /**
      * Creates new form GUI
@@ -69,24 +82,49 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
-      // TODO add your handling code here:
-      JFileChooser file = new JFileChooser();
-     
-      int returnVal = file.showOpenDialog(this);
-      if (returnVal == file.APPROVE_OPTION) {
-          File file1 = file.getSelectedFile();
-          System.out.println(file1.getAbsolutePath());
-      }
-      else{
-          System.out.println("");
-      }      
-      
-      new VentanaImagen().setVisible(true);///dudoso
- 
-      
+        // TODO add your handling code here:
 
-      
+            JFrame ventana = new JFrame();
+            ventana.setResizable(true);
+            ventana.setSize(400, 300);
+            ventana.add(new JLabel(new ImageIcon(abrirImagen())));
+            ventana.setVisible(true);
+            
+
+
     }//GEN-LAST:event_CargarActionPerformed
+
+    //Método que devuelve una imagen abierta desde archivo
+    //Retorna un objeto BufferedImagen
+    public BufferedImage abrirImagen() {
+        //Creamos la variable que será devuelta (la creamos como null)
+        BufferedImage bmp = null;
+        //Creamos un nuevo cuadro de diálogo para seleccionar imagen
+        JFileChooser selector = new JFileChooser();
+        //Le damos un título
+        selector.setDialogTitle("Seleccione una imagen");
+        //Filtramos los tipos de archivos
+        FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG & PNG & BMP", "jpg", "png", "bmp");
+        selector.setFileFilter(filtroImagen);
+        //Abrimos el cuadro de diálog
+        int flag = selector.showOpenDialog(null);
+        //Comprobamos que pulse en aceptar
+        if (flag == JFileChooser.APPROVE_OPTION) {
+            try {
+                //Devuelve el fichero seleccionado
+                File imagenSeleccionada = selector.getSelectedFile();
+                //Asignamos a la variable bmp la imagen leida
+                bmp = ImageIO.read(imagenSeleccionada);
+            }
+            catch (Exception e) {
+            }
+
+        }
+        //Asignamos la imagen cargada a la propiedad imageActual
+        imageActual = bmp;
+        //Retornamos el valor
+        return bmp;
+    }
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         // TODO add your handling code here:
@@ -109,13 +147,17 @@ public class GUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        }
+        catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        }
+        catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        }
+        catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
