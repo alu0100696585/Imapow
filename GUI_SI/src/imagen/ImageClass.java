@@ -5,13 +5,16 @@
  */
 package imagen;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.lang.Byte;
-
+import java.lang.Double;
 /**
  *
  * @author Luis
@@ -87,11 +90,32 @@ public class ImageClass {
         return b;
     }
     
+   
+    
     
     public ImageIcon getImage(){  //Obtiene un ImageIcon del array de bytes.
-        ImageIcon image2 = new ImageIcon(this.imageToByte(), "TIFF");
+        ImageIcon image2 = new ImageIcon(this.imageToByte(), "Image");
         return image2;
     };
+    
+    
+    public void saveImage(String filename){ // Guarda la imagen en un fichero de nombre filename
+        RenderedImage rendered = null;
+        BufferedImage buffered = new BufferedImage(length, width, BufferedImage.TYPE_INT_RGB); 
+        Graphics2D g = buffered.createGraphics();  
+        g.drawImage(this.getImage().getImage(), 0, 0, null);  
+        g.dispose();  
+        rendered = buffered;
+        
+        try {
+            ImageIO.write(rendered, "bmp", new File(filename));
+        } 
+        catch(Exception e){ 
+            System.out.println("Some problem has occurred. Please try again"); 
+        }
+    }
+    
+    
     
     public int[] getColorValues(){ //Devuelve los valores del histograma de color
         for (int i=0;i<255;i++){
@@ -146,16 +170,17 @@ public class ImageClass {
 
     
     
-    public double imgContrast(){  // Devuelve el contraste (Desv. Tipica)
+    public int imgContrast(){  // Devuelve el contraste (Desv. Tipica)
         int average = this.imgBrightness();
-        double contrast = 0;
+        double c = 0;
+        Double contrast = new Double(c);
         
         for(int i=0;i<img_size;i++){
             contrast = contrast + (image[i] - average) * (image[i] - average);
         }
         contrast = contrast / img_size;
         contrast = Math.sqrt(contrast);
-        return contrast;
+        return contrast.intValue();
     }
     
     
@@ -181,12 +206,64 @@ public class ImageClass {
         }
         return bin_img;
     }
-       
     
-    public int[] imgSetBrightness(int bright){
-        int[] br_img = new int[img_size];
-        
+    
+    public int[] linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
+       int[] newimg = new int[img_size];
+         for (int i=0;i<img_size;i++){
+            newimg[i] = image[i] * A + B;
+        }
+        return newimg;
     }
+    
+    
+    public int[] imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
+        int currentB = this.imgBrightness();
+        int currentC = this.imgContrast();
+        int[] newimg = new int[img_size];
+           
+        int newCo = contrast / currentC;
+        int newBr = bright - (newCo*currentB);
+        
+        for (int i=0;i<img_size;i++){
+            newimg[i] = image[i] * newCo + newBr;
+        }
+        return newimg;
+    }
+    
+    
+    public int[] ROI(int x, int y, int len, int wid){  // Genera una subimagen de la imagen actual
+        int[] roi = new int[len*wid];
+        int ind = 0;
+        for(int i=0; i<img_size; i++){
+            if(i>= (x-1)*img_size+y-1 && i <= ((x+len)-1)*img_size+(y+wid)-1){
+                roi[ind]=image[i];
+                ind++;
+            }
+        }
+        return roi;
+    }
+    
+    
+    
+    public int colorInPos(int x, int y){  // Devuelve el valor de color del punto X,Y
+        return image[getPos(x,y)];
+    }
+    
+    
+    public int getEnthropy(){  //Devuelve la entropia de la imagen
+        Double ProbI;
+	Double enthropy = 0.0;
+	for( int i = 0; i < 256; i++ ) {
+            ProbI = (double) colorValues[i] / img_size;
+            if (ProbI > 0.0)
+                enthropy += ProbI * (Math.log(ProbI) / Math.log(2.0));	
+        }
+	enthropy *= -1;
+        return enthropy.intValue();
+    }
+    
 }
+
 
 
