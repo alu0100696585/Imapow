@@ -10,27 +10,33 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+
 /**
  *
- * @author God
+ * @author ImapowSL
+ * 
  */
 public class GUI extends javax.swing.JFrame {
 
     private BufferedImage imageActual;
-
+    private ArrayList<ImageFrame> imagenes;
+    
     /**
      * Creates new form GUI
      */
     public GUI() {
+        imagenes = new ArrayList<ImageFrame>();
         initComponents();
     }
 
@@ -47,7 +53,10 @@ public class GUI extends javax.swing.JFrame {
         Archivo = new javax.swing.JMenu();
         Cargar = new javax.swing.JMenuItem();
         Salir = new javax.swing.JMenuItem();
-        Opciones = new javax.swing.JMenu();
+        Ver = new javax.swing.JMenu();
+        EscalaGrises = new javax.swing.JMenuItem();
+        Edicion = new javax.swing.JMenu();
+        Recortar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -73,8 +82,29 @@ public class GUI extends javax.swing.JFrame {
 
         menu_gui.add(Archivo);
 
-        Opciones.setText("Opciones");
-        menu_gui.add(Opciones);
+        Ver.setText("Ver");
+
+        EscalaGrises.setText("Pasar a escala de grises");
+        EscalaGrises.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EscalaGrisesActionPerformed(evt);
+            }
+        });
+        Ver.add(EscalaGrises);
+
+        menu_gui.add(Ver);
+
+        Edicion.setText("Edicion");
+
+        Recortar.setText("Recortar");
+        Recortar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RecortarActionPerformed(evt);
+            }
+        });
+        Edicion.add(Recortar);
+
+        menu_gui.add(Edicion);
 
         setJMenuBar(menu_gui);
 
@@ -84,37 +114,39 @@ public class GUI extends javax.swing.JFrame {
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
 
-            JFrame ventana = new JFrame();
-            ventana.setResizable(true);
-            ventana.setSize(400, 300);
-            ventana.add(new JLabel(new ImageIcon(abrirImagen())));
-            ventana.setVisible(true);
-            
-
+        imagenes.add(new ImageFrame(abrirImagen()));  
 
     }//GEN-LAST:event_CargarActionPerformed
 
     //Método que devuelve una imagen abierta desde archivo
     //Retorna un objeto BufferedImagen
     public BufferedImage abrirImagen() {
+        
         //Creamos la variable que será devuelta (la creamos como null)
         BufferedImage bmp = null;
+        
         //Creamos un nuevo cuadro de diálogo para seleccionar imagen
         JFileChooser selector = new JFileChooser();
+        
         //Le damos un título
         selector.setDialogTitle("Seleccione una imagen");
+        
         //Filtramos los tipos de archivos
-        FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG & PNG & BMP", "jpg", "png", "bmp");
+        FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("BMP", "bmp");
         selector.setFileFilter(filtroImagen);
+        
         //Abrimos el cuadro de diálog
         int flag = selector.showOpenDialog(null);
+        
         //Comprobamos que pulse en aceptar
         if (flag == JFileChooser.APPROVE_OPTION) {
             try {
                 //Devuelve el fichero seleccionado
                 File imagenSeleccionada = selector.getSelectedFile();
+            
                 //Asignamos a la variable bmp la imagen leida
                 bmp = ImageIO.read(imagenSeleccionada);
+               
             }
             catch (Exception e) {
             }
@@ -130,6 +162,33 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(1);
     }//GEN-LAST:event_SalirActionPerformed
+
+    private void EscalaGrisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscalaGrisesActionPerformed
+        // TODO add your handling code here:
+        if(imageActual == null){
+        JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..", 
+                "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            imagenes.add(new ImageFrame(imageActual));               //crear nueva ventana
+            imagenes.get(imagenes.size()-1).EscalaGrises();          //aplicar escala grises
+            imageActual = imagenes.get(imagenes.size()-1).get_img(); //actualizar imagen
+        }
+    }//GEN-LAST:event_EscalaGrisesActionPerformed
+
+    private void RecortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecortarActionPerformed
+        // TODO add your handling code here:
+        if(imageActual == null){
+        JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..", 
+                "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            imagenes.add(new ImageFrame(imageActual));      //crear nueva ventana
+            //cargando el recuadro de la imagen anterior en la nueva imagen 
+            imagenes.get(imagenes.size()-1).roi(imagenes.get(imagenes.size()-2).ix,imagenes.get(imagenes.size()-2).iy,imagenes.get(imagenes.size()-2).fx,imagenes.get(imagenes.size()-2).fy); //aplicar recorte
+            imageActual = imagenes.get(imagenes.size()-1).get_img(); //actualizar imagen
+        }
+    }//GEN-LAST:event_RecortarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,8 +232,11 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Archivo;
     private javax.swing.JMenuItem Cargar;
-    private javax.swing.JMenu Opciones;
+    private javax.swing.JMenu Edicion;
+    private javax.swing.JMenuItem EscalaGrises;
+    private javax.swing.JMenuItem Recortar;
     private javax.swing.JMenuItem Salir;
+    private javax.swing.JMenu Ver;
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
 }
