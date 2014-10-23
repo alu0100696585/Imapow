@@ -371,6 +371,26 @@ public class ImageClass {
         }
         return newimg;
     }
+    
+    public int imgMaxColor(){
+        int max = 0;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]>max){
+             max = pixels[i];
+             }
+         }
+        return max;
+    }
+    
+    public int imgMinColor(){
+        int min = 999999;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]<min){
+             min = pixels[i];
+             }
+         }
+        return min;
+    }
 }
 
 
