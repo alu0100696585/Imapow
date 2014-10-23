@@ -5,9 +5,6 @@
  */
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.LayoutManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -15,23 +12,30 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
 /**
  *
  * @author ImapowSL
- * 
+ *
  */
 public class GUI extends javax.swing.JFrame {
 
     private BufferedImage imageActual;
     private ArrayList<ImageFrame> imagenes;
-    
+    private int indiceVentana;
+
+    public int getIndiceVentana() {
+        return indiceVentana;
+    }
+
+    public void setIndiceVentana(int indiceVentana) {
+        this.indiceVentana = indiceVentana;
+    }
+
     /**
      * Creates new form GUI
      */
@@ -55,11 +59,13 @@ public class GUI extends javax.swing.JFrame {
         Salir = new javax.swing.JMenuItem();
         Ver = new javax.swing.JMenu();
         EscalaGrises = new javax.swing.JMenuItem();
+        HistogramaValAbsol = new javax.swing.JMenuItem();
+        HistogramaValAcu = new javax.swing.JMenuItem();
         Edicion = new javax.swing.JMenu();
         Recortar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(800, 70));
         getContentPane().setLayout(null);
 
         Archivo.setText("Archivo");
@@ -92,6 +98,22 @@ public class GUI extends javax.swing.JFrame {
         });
         Ver.add(EscalaGrises);
 
+        HistogramaValAbsol.setText("Histograma valores absolutos");
+        HistogramaValAbsol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistogramaValAbsolActionPerformed(evt);
+            }
+        });
+        Ver.add(HistogramaValAbsol);
+
+        HistogramaValAcu.setText("Histograma valores acumulados");
+        HistogramaValAcu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistogramaValAcuActionPerformed(evt);
+            }
+        });
+        Ver.add(HistogramaValAcu);
+
         menu_gui.add(Ver);
 
         Edicion.setText("Edicion");
@@ -114,39 +136,50 @@ public class GUI extends javax.swing.JFrame {
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
 
-        imagenes.add(new ImageFrame(abrirImagen()));  
+        imagenes.add(new ImageFrame(abrirImagen()));
+        imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
 
     }//GEN-LAST:event_CargarActionPerformed
+
+    private void CalcularFocusImagen() {//funcion para intentar calcular el focus de la ventana
+        for (int i = 0; i < imagenes.size(); i++) {
+            if (imagenes.get(i).getVentana().isFocused()) {
+                setIndiceVentana(imagenes.get(i).getIndex());
+            }
+        }
+
+        imageActual = imagenes.get(getIndiceVentana()).get_img(); //actualizar imagen
+    }
 
     //Método que devuelve una imagen abierta desde archivo
     //Retorna un objeto BufferedImagen
     public BufferedImage abrirImagen() {
-        
+
         //Creamos la variable que será devuelta (la creamos como null)
         BufferedImage bmp = null;
-        
+
         //Creamos un nuevo cuadro de diálogo para seleccionar imagen
         JFileChooser selector = new JFileChooser();
-        
+
         //Le damos un título
         selector.setDialogTitle("Seleccione una imagen");
-        
+
         //Filtramos los tipos de archivos
         FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("BMP", "bmp");
         selector.setFileFilter(filtroImagen);
-        
+
         //Abrimos el cuadro de diálog
         int flag = selector.showOpenDialog(null);
-        
+
         //Comprobamos que pulse en aceptar
         if (flag == JFileChooser.APPROVE_OPTION) {
             try {
                 //Devuelve el fichero seleccionado
                 File imagenSeleccionada = selector.getSelectedFile();
-            
+
                 //Asignamos a la variable bmp la imagen leida
                 bmp = ImageIO.read(imagenSeleccionada);
-               
+
             }
             catch (Exception e) {
             }
@@ -165,30 +198,61 @@ public class GUI extends javax.swing.JFrame {
 
     private void EscalaGrisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscalaGrisesActionPerformed
         // TODO add your handling code here:
-        if(imageActual == null){
-        JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..", 
-                "Error", JOptionPane.WARNING_MESSAGE);
+        
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
         }
-        else{
+        else {
             imagenes.add(new ImageFrame(imageActual));               //crear nueva ventana
-            imagenes.get(imagenes.size()-1).EscalaGrises();          //aplicar escala grises
-            imageActual = imagenes.get(imagenes.size()-1).get_img(); //actualizar imagen
+            imagenes.get(imagenes.size() - 1).EscalaGrises();          //aplicar escala grises
+
         }
     }//GEN-LAST:event_EscalaGrisesActionPerformed
 
     private void RecortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecortarActionPerformed
         // TODO add your handling code here:
-        if(imageActual == null){
-        JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..", 
-                "Error", JOptionPane.WARNING_MESSAGE);
+        
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
         }
-        else{
+        else {
             imagenes.add(new ImageFrame(imageActual));      //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             //cargando el recuadro de la imagen anterior en la nueva imagen 
-            imagenes.get(imagenes.size()-1).roi(imagenes.get(imagenes.size()-2).ix,imagenes.get(imagenes.size()-2).iy,imagenes.get(imagenes.size()-2).fx,imagenes.get(imagenes.size()-2).fy); //aplicar recorte
-            imageActual = imagenes.get(imagenes.size()-1).get_img(); //actualizar imagen
+            imagenes.get(imagenes.size() - 1).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy); //aplicar recorte
         }
     }//GEN-LAST:event_RecortarActionPerformed
+//histograma acumulado aun no esta comprobado, esta puesto a lo hamphry perry
+    /*
+    private void HistogramaValAbsolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAbsolActionPerformed
+        // TODO add your handling code here:
+        
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            HistogramaVA histograma = new HistogramaVA(imagenes.get(getIndiceVentana()).getImagen().getPixels());
+            histograma.repaint();
+            histograma.setVisible(true);
+        }
+    }//GEN-LAST:event_HistogramaValAbsolActionPerformed
+*/
+    private void HistogramaValAcuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAcuActionPerformed
+        // TODO add your handling code here:
+        
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            HistogramaVAC histograma = new HistogramaVAC(imagenes.get(getIndiceVentana()).getImagen().getPixels());
+            histograma.repaint();
+            histograma.setVisible(true);
+        }
+    }//GEN-LAST:event_HistogramaValAcuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +298,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem Cargar;
     private javax.swing.JMenu Edicion;
     private javax.swing.JMenuItem EscalaGrises;
+    private javax.swing.JMenuItem HistogramaValAbsol;
+    private javax.swing.JMenuItem HistogramaValAcu;
     private javax.swing.JMenuItem Recortar;
     private javax.swing.JMenuItem Salir;
     private javax.swing.JMenu Ver;

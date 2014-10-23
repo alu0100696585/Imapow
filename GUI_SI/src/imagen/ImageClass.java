@@ -34,8 +34,11 @@ public class ImageClass {
     private int width;              //Ancho de la imagen
     private ArrayList<Color> image; //Color de cada pixel en la imagen 
     private int pixels[];           //Array de enteros de la imagen (en escala de grises)
-    private int colorValues[];     //Array de colores del histograma
-    private int acumulativeValues[]; //Array de colores del histograma acumulativo
+    //private int colorValues[];     //Array de colores del histograma 
+
+    public int[] getPixels() {
+        return pixels;
+    }
     
     //constantes para la conversion a gris
     public static final double NTSC_R = 0.299;
@@ -48,8 +51,7 @@ public class ImageClass {
    
         picture = img;
         image = new ArrayList<Color>();
-        colorValues = new int[256];
-        acumulativeValues = new int[256];
+       // colorValues = new int[256];
   
         
         try{
@@ -96,20 +98,17 @@ public class ImageClass {
         height = l;       //Largo de la imagen
         width = w;        //Ancho de la imagen
         pixels = img;     //Array de bytes de la imagen
-        colorValues = new int[256]; //Histograma
-        acumulativeValues = new int[256]; //Histograma acumulativo
+        //colorValues = new int[256];
     }
     
     
     public ImageClass(ImageClass other){   // CONSTRUCTOR DE COPIA
-        picture = other.picture;
         img_size = other.img_size; //Tamaño de imagen
         height = other.height;     //Largo de la imagen
         width = other.width;       //Ancho de la imagen
         image = other.image;       //Imagen
         pixels = other.pixels;     //Array de pixeles
-        colorValues = other.colorValues; // Histograma
-        acumulativeValues = other.acumulativeValues; //Histograma Acumulativo
+        //colorValues = other.colorValues;
     }
     
  /*   
@@ -148,30 +147,19 @@ public class ImageClass {
         }
     }
     
-    */
+
     
     public int[] getColorValues(){ //Devuelve los valores del histograma de color
         for (int i=0;i<255;i++){
-            colorValues[i]=0;
+            pixels[i]=0;
         }
         for (int i=0;i<img_size;i++){
-            colorValues[pixels[i]]=colorValues[pixels[i]]+1;
+            pixels[i] = image.get(i);
         }
-        return colorValues;
+        return pixels;
     };
-    
-    
-    public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
-        for (int i=0;i<255;i++){
-            acumulativeValues[i]=0;
-        }
-        for (int i=0;i<img_size;i++){
-            acumulativeValues[pixels[i]]= acumulativeValues[pixels[i]-1] + colorValues[pixels[i]]+1;
-        }
-        return acumulativeValues;
-    }
+    */
    
-    
     
     public BufferedImage get_picture(){
         return picture;
@@ -203,7 +191,10 @@ public class ImageClass {
         //Otras funciones que hagan falta mas adelante//
     }
         
-
+        
+    public void showHistogram(){ // Muestra el histograma de color de la imagen
+        //SACAR VENTANA???
+    }
     
     public int imgBrightness(){ // Devuelve el brillo (media de color) de la imagen
         int suma = 0;
@@ -277,7 +268,7 @@ public class ImageClass {
     }
     
     
-   /* public int[] ROI(int x, int y, int len, int wid){  // Genera una subimagen de la imagen actual
+    public int[] ROI(int x, int y, int len, int wid){  // Genera una subimagen de la imagen actual
         int[] roi = new int[len*wid];
         int ind = 0;
         for(int i=0; i<img_size; i++){
@@ -287,14 +278,13 @@ public class ImageClass {
             }
         }
         return roi;
-    }*/
+    }
     
     
     
     public int colorInPos(int x, int y){  // Devuelve el valor de color del punto X,Y
         return pixels[getPos(x,y)];
     }
-    
     
     
     public int getEnthropy(){  //Devuelve la entropia de la imagen
@@ -309,9 +299,7 @@ public class ImageClass {
         return enthropy.intValue();
     }
 
-    
-    
-    public BufferedImage escalaGrises() {  // Devuelve la imagen en escala de grises
+    public BufferedImage escalaGrises() {
         
         BufferedImage eg = picture;
         
@@ -332,9 +320,7 @@ public class ImageClass {
         return picture;
     }
     
-    
-    
-    public BufferedImage Roi(int ix, int iy, Rectangle rec){ // Devuelve la imagen recortada por el cuadrado rec
+    public BufferedImage Roi(int ix, int iy, Rectangle rec){
     
         BufferedImage roi = new BufferedImage(rec.width,rec.height,BufferedImage.TYPE_INT_RGB);
         
@@ -352,44 +338,6 @@ public class ImageClass {
         
         picture = roi;
         return roi;
-    }
-    
-    
-    
-    public int[] linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
-    // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
-    // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
-    // y el mayor en end_zones.
-        int[] newimg = new int[img_size];
-            
-        for(int i=0;i<img_size;i++){
-            for(int j=0;j>n_trans;j++){
-                if(pixels[i] > init_zones[j] && pixels[i] < end_zones[j]){
-                    newimg[i] = pixels[i] * A[j] + B[j];
-                }
-            }
-        }
-        return newimg;
-    }
-    
-    public int imgMaxColor(){
-        int max = 0;
-         for (int i=0;i<img_size;i++){
-             if(pixels[i]>max){
-             max = pixels[i];
-             }
-         }
-        return max;
-    }
-    
-    public int imgMinColor(){
-        int min = 999999;
-         for (int i=0;i<img_size;i++){
-             if(pixels[i]<min){
-             min = pixels[i];
-             }
-         }
-        return min;
     }
 }
 

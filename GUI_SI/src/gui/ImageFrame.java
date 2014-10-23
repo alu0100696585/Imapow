@@ -10,6 +10,8 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionList
 import imagen.ImageClass;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -25,8 +27,29 @@ import javax.swing.JPanel;
  */
 public class ImageFrame implements MouseListener, MouseMotionListener{
     private ImageClass imagen;
+
+    public ImageClass getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(ImageClass imagen) {
+        this.imagen = imagen;
+    }
     private JFrame ventana;
+
+    public JFrame getVentana() {
+        return ventana;
+    }
     private JLienzo lienzo;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    private int index;//variable indice de la ventana
     public int ix;
     public int iy;
     public int fx;
@@ -37,6 +60,9 @@ public class ImageFrame implements MouseListener, MouseMotionListener{
         ventana = new JFrame();
         ventana.setResizable(true);
         ventana.setSize(400, 300);
+        
+        //inicializacion del indice
+        index = -1;
         
         //Almacenando la informacion de la imagen
         imagen = new ImageClass(img);
