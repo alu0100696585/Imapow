@@ -34,7 +34,8 @@ public class ImageClass {
     private int width;              //Ancho de la imagen
     private ArrayList<Color> image; //Color de cada pixel en la imagen 
     private int pixels[];           //Array de enteros de la imagen (en escala de grises)
-    private int colorValues[];     //Array de colores del histograma 
+    private int colorValues[];     //Array de colores del histograma
+    private int acumulativeValues[]; //Array de colores del histograma acumulativo
     
     //constantes para la conversion a gris
     public static final double NTSC_R = 0.299;
@@ -48,6 +49,7 @@ public class ImageClass {
         picture = img;
         image = new ArrayList<Color>();
         colorValues = new int[256];
+        acumulativeValues = new int[256];
   
         
         try{
@@ -94,7 +96,8 @@ public class ImageClass {
         height = l;       //Largo de la imagen
         width = w;        //Ancho de la imagen
         pixels = img;     //Array de bytes de la imagen
-        //colorValues = new int[256];
+        colorValues = new int[256]; //Histograma
+        acumulativeValues = new int[256]; //Histograma acumulativo
     }
     
     
@@ -105,7 +108,8 @@ public class ImageClass {
         width = other.width;       //Ancho de la imagen
         image = other.image;       //Imagen
         pixels = other.pixels;     //Array de pixeles
-        //colorValues = other.colorValues;
+        colorValues = other.colorValues; // Histograma
+        acumulativeValues = other.acumulativeValues; //Histograma Acumulativo
     }
     
  /*   
@@ -156,7 +160,18 @@ public class ImageClass {
         return colorValues;
     };
     
+    
+    public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
+        for (int i=0;i<255;i++){
+            acumulativeValues[i]=0;
+        }
+        for (int i=0;i<img_size;i++){
+            acumulativeValues[pixels[i]]= acumulativeValues[pixels[i]-1] + colorValues[pixels[i]]+1;
+        }
+        return acumulativeValues;
+    }
    
+    
     
     public BufferedImage get_picture(){
         return picture;
@@ -281,6 +296,7 @@ public class ImageClass {
     }
     
     
+    
     public int getEnthropy(){  //Devuelve la entropia de la imagen
         Double ProbI;
 	Double enthropy = 0.0;
@@ -293,7 +309,9 @@ public class ImageClass {
         return enthropy.intValue();
     }
 
-    public BufferedImage escalaGrises() {
+    
+    
+    public BufferedImage escalaGrises() {  // Devuelve la imagen en escala de grises
         
         BufferedImage eg = picture;
         
@@ -314,7 +332,9 @@ public class ImageClass {
         return picture;
     }
     
-    public BufferedImage Roi(int ix, int iy, Rectangle rec){
+    
+    
+    public BufferedImage Roi(int ix, int iy, Rectangle rec){ // Devuelve la imagen recortada por el cuadrado rec
     
         BufferedImage roi = new BufferedImage(rec.width,rec.height,BufferedImage.TYPE_INT_RGB);
         
@@ -332,6 +352,24 @@ public class ImageClass {
         
         picture = roi;
         return roi;
+    }
+    
+    
+    
+    public int[] linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
+    // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
+    // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
+    // y el mayor en end_zones.
+        int[] newimg = new int[img_size];
+            
+        for(int i=0;i<img_size;i++){
+            for(int j=0;j>n_trans;j++){
+                if(pixels[i] > init_zones[j] && pixels[i] < end_zones[j]){
+                    newimg[i] = pixels[i] * A[j] + B[j];
+                }
+            }
+        }
+        return newimg;
     }
 }
 
