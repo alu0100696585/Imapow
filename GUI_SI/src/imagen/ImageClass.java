@@ -339,6 +339,42 @@ public class ImageClass {
         picture = roi;
         return roi;
     }
+    
+    public int[] linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
+    // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
+    // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
+    // y el mayor en end_zones.
+        int[] newimg = new int[img_size];
+            
+        for(int i=0;i<img_size;i++){
+            for(int j=0;j>n_trans;j++){
+                if(pixels[i] > init_zones[j] && pixels[i] < end_zones[j]){
+                    newimg[i] = pixels[i] * A[j] + B[j];
+                }
+            }
+        }
+        return newimg;
+    }
+    
+    public int imgMaxColor(){ // Devuelve el valor máximo de color de la imagen
+        int max = 0;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]>max){
+             max = pixels[i];
+             }
+         }
+        return max;
+    }
+    
+    public int imgMinColor(){ // Devuelve el valor minimo de color de la imagen
+        int min = 999999;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]<min){
+             min = pixels[i];
+             }
+         }
+        return min;
+    }
 }
 
 
