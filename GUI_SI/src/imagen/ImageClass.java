@@ -387,6 +387,15 @@ public class ImageClass {
          }
         return min;
     }
+    
+    public int[] equalization(){
+        int[] newimg = new int[img_size];
+        int [] acHisto = this.getAcumulativeValues();
+        for (int i=0;i<img_size;i++){
+            newimg[i] = acHisto[pixels[i]] * 255 / img_size;
+        }
+        return newimg;
+    }
 }
 
 
