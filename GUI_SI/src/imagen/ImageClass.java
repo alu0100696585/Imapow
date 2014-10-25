@@ -34,11 +34,7 @@ public class ImageClass {
     private int width;              //Ancho de la imagen
     private ArrayList<Color> image; //Color de cada pixel en la imagen 
     private int pixels[];           //Array de enteros de la imagen (en escala de grises)
-    //private int colorValues[];     //Array de colores del histograma 
-
-    public int[] getPixels() {
-        return pixels;
-    }
+    private int colorValues[];     //Array de colores del histograma 
     
     //constantes para la conversion a gris
     public static final double NTSC_R = 0.299;
@@ -51,7 +47,7 @@ public class ImageClass {
    
         picture = img;
         image = new ArrayList<Color>();
-       // colorValues = new int[256];
+        colorValues = new int[256];
   
         
         try{
@@ -98,7 +94,7 @@ public class ImageClass {
         height = l;       //Largo de la imagen
         width = w;        //Ancho de la imagen
         pixels = img;     //Array de bytes de la imagen
-        //colorValues = new int[256];
+        colorValues = new int[256];
     }
     
     
@@ -108,7 +104,7 @@ public class ImageClass {
         width = other.width;       //Ancho de la imagen
         image = other.image;       //Imagen
         pixels = other.pixels;     //Array de pixeles
-        //colorValues = other.colorValues;
+        colorValues = other.colorValues;
     }
     
  /*   
@@ -147,18 +143,34 @@ public class ImageClass {
         }
     }
     
-
+*/
+    public int[] getPixels() {  //Devuelve el array de valores de color de la imagen
+        return pixels;
+    }
+    
     
     public int[] getColorValues(){ //Devuelve los valores del histograma de color
         for (int i=0;i<255;i++){
-            pixels[i]=0;
+            colorValues[i]=0;
         }
         for (int i=0;i<img_size;i++){
-            pixels[i] = image.get(i);
+            colorValues[pixels[i]]+=1;
         }
-        return pixels;
+        return colorValues;
     };
-    */
+    
+    
+    public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
+        int [] acumulativeValues = new int[256];
+        for (int i=0;i<255;i++){
+            acumulativeValues[i]=0;
+        }
+        for (int i=0;i<img_size;i++){
+            acumulativeValues[pixels[i]]= acumulativeValues[pixels[i]-1] + colorValues[pixels[i]]+1;
+        }
+        return acumulativeValues;
+    }
+    
    
     
     public BufferedImage get_picture(){
