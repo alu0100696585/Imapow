@@ -402,21 +402,33 @@ public class ImageClass {
     }
     
     
+    public BufferedImage paintInRed(int []pix, int h, int w, int threshold){
+        Color red = new Color(255, 0, 0); // Color rojo
+
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                if(pix[i] < threshold){
+                    newimg.setRGB(i, j, pix[getPos(i,j)]);
+                }
+                else newimg.setRGB(i, j, red.getRGB());
+            }
+        }
+        return newimg;
+    }
+    
     public BufferedImage compare(ImageClass im, int threshold){  
     //Devuelve la imagen difetencia de comparar la imagen actual con la imagen im, con un umbral de error threshold
         int [] newimg = new int[img_size];
         if (this.img_size == im.img_size){
             int [] pixels2 = im.getPixels();
             for (int i=0;i<img_size;i++){
-                if (Math.abs(this.pixels[i] - pixels2[i]) > threshold){
                     newimg[i] = Math.abs(this.pixels[i] - pixels2[i]);
-                }
-                else newimg[i] = 0;
             }
         }
         else System.out.println("ERROR: Las imágenes deben ser del mismo tamaño");
         
-        return toBuffImg(newimg, height, width);
+        return paintInRed(newimg, height, width, threshold);
     }
 }
 
