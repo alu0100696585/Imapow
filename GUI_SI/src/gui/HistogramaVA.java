@@ -43,7 +43,7 @@ public class HistogramaVA extends JFrame {
             g.setColor(Color.BLACK);
             for (int i = 0; i < pixeles.length; i++) {
                 g.drawLine((i/100) + 10, 260, (i/100) + 10, 260 - (pixeles[i]));
-                System.out.println(pixeles[i]);
+                //System.out.println(pixeles[i]);
             }
         }
     }

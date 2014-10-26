@@ -44,8 +44,8 @@ public class HistogramaVAC extends JFrame {
             int acumulado = 0;
             for (int i = 0; i < pixeles.length; i++) {
                 acumulado += pixeles[i]/8;
-                g.drawLine((i/100) + 10, 260, (i/100) + 10, 260 - (acumulado));
-                System.out.println(pixeles[i]);
+                g.drawLine((i/250) + 10, 260, (i/250) + 10, 260 - (acumulado/3500));
+                //System.out.println(pixeles[i]);
             }
         }
     }

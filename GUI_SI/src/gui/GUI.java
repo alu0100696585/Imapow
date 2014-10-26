@@ -224,8 +224,7 @@ public class GUI extends javax.swing.JFrame {
             imagenes.get(imagenes.size() - 1).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy); //aplicar recorte
         }
     }//GEN-LAST:event_RecortarActionPerformed
-//histograma acumulado aun no esta comprobado, esta puesto a lo hamphry perry
-    /*
+
     private void HistogramaValAbsolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAbsolActionPerformed
         // TODO add your handling code here:
         
@@ -239,7 +238,7 @@ public class GUI extends javax.swing.JFrame {
             histograma.setVisible(true);
         }
     }//GEN-LAST:event_HistogramaValAbsolActionPerformed
-*/
+
     private void HistogramaValAcuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAcuActionPerformed
         // TODO add your handling code here:
         
