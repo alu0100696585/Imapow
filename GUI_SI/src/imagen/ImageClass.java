@@ -202,12 +202,19 @@ public class ImageClass {
         //getColorValues();
         //Otras funciones que hagan falta mas adelante//
     }
-        
-        
-    public void showHistogram(){ // Muestra el histograma de color de la imagen
-        //SACAR VENTANA???
+    
+    
+    public BufferedImage toBuffImg(int[] pix, int h, int w){
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                newimg.setRGB(i, j, pix[getPos(i,j)]);
+            }
+        }
     }
     
+    
+        
     public int imgBrightness(){ // Devuelve el brillo (media de color) de la imagen
         int suma = 0;
         for(int i=0;i<img_size;i++){
@@ -233,18 +240,18 @@ public class ImageClass {
     
     
     
-    public int[] imgNegative(){  // Devuelve el negativo (complemento) de la imagen
+    public BufferedImage imgNegative(){  // Devuelve el negativo (complemento) de la imagen
         int[] neg_img = new int[img_size];
         int L = 255;
         
         for (int i=0;i<img_size;i++){
             neg_img[i] = pixels[i] - L;
         }
-        return neg_img;
+        return toBuffImg(neg_img, height, width);
     }
     
     
-    public int[] imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
+    public BufferedImage imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
         int[] bin_img = new int[img_size];
         
         for (int i=0;i<img_size;i++){
@@ -252,20 +259,20 @@ public class ImageClass {
                 bin_img[i] = 255;
             else bin_img[i] = 0;
         }
-        return bin_img;
+        return toBuffImg(bin_img, height, width);
     }
     
     
-    public int[] linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
+    public BufferedImage linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
        int[] newimg = new int[img_size];
          for (int i=0;i<img_size;i++){
             newimg[i] = pixels[i] * A + B;
         }
-        return newimg;
+        return toBuffImg(newimg, height, width);
     }
     
     
-    public int[] imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
+    public BufferedImage imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
         int currentB = this.imgBrightness();
         int currentC = this.imgContrast();
         int[] newimg = new int[img_size];
@@ -276,10 +283,10 @@ public class ImageClass {
         for (int i=0;i<img_size;i++){
             newimg[i] = pixels[i] * newCo + newBr;
         }
-        return newimg;
+        return toBuffImg(newimg, height, width);
     }
     
-    
+  /*  
     public int[] ROI(int x, int y, int len, int wid){  // Genera una subimagen de la imagen actual
         int[] roi = new int[len*wid];
         int ind = 0;
@@ -291,7 +298,7 @@ public class ImageClass {
         }
         return roi;
     }
-    
+    */
     
     
     public int colorInPos(int x, int y){  // Devuelve el valor de color del punto X,Y
@@ -352,7 +359,7 @@ public class ImageClass {
         return roi;
     }
     
-    public int[] linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
+    public BufferedImage linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
     // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
     // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
     // y el mayor en end_zones.
@@ -365,7 +372,7 @@ public class ImageClass {
                 }
             }
         }
-        return newimg;
+        return toBuffImg(newimg, height, width);
     }
     
     public int imgMaxColor(){ // Devuelve el valor máximo de color de la imagen
@@ -388,14 +395,16 @@ public class ImageClass {
         return min;
     }
     
-    public int[] equalization(){
+    public BufferedImage equalization(){  // Devuelve la imagen con el histograma equalizado
         int[] newimg = new int[img_size];
         int [] acHisto = this.getAcumulativeValues();
         for (int i=0;i<img_size;i++){
             newimg[i] = acHisto[pixels[i]] * 255 / img_size;
         }
-        return newimg;
+        return toBuffImg(newimg, height, width);
     }
+    
+    
 }
 
 
