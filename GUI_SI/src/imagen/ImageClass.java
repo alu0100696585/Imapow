@@ -445,6 +445,40 @@ public class ImageClass {
     }
     
     
+    public BufferedImage HistogramSpecification(ImageClass im2){ // Especificacion del histograma con otra imagen de muestra
+        int[] imhisto = this.getAcumulativeValues();
+        int[] imhisto2 = im2.getAcumulativeValues();
+        int[] trans_table = new int[256];
+        
+        for (int i=0;i<255;i++){
+            imhisto[i]/=img_size;
+            imhisto2[i]/=im2.img_size;
+        }
+        
+        for (int i=0;i<255;i++){
+            for (int j=0;j<255;j++){
+                if (imhisto[i] == imhisto2[j]){
+                    trans_table[i] = j;
+                }
+                else if (imhisto[i] < imhisto[j]){
+                    if(j != 0 && j != 255){
+                        int aux = Math.abs(imhisto[i] - imhisto2[j]);
+                        int aux2 = Math.abs(imhisto[i] - imhisto2[j-1]);
+                        if(aux < aux2){
+                            trans_table[i] = j;
+                        }
+                        else trans_table[i] = j-1;
+                    }
+                    else{
+                        trans_table[i] = j;
+                            
+                    }
+                }
+            }
+        }
+        return TRANSFORM(pixels, trans_table);
+    }
+    
     
     
     
