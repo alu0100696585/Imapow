@@ -211,6 +211,7 @@ public class ImageClass {
                 newimg.setRGB(i, j, pix[getPos(i,j)]);
             }
         }
+        return newimg;
     }
     
     
@@ -241,49 +242,49 @@ public class ImageClass {
     
     
     public BufferedImage imgNegative(){  // Devuelve el negativo (complemento) de la imagen
-        int[] neg_img = new int[img_size];
+        int[] trans_table = new int[256];
         int L = 255;
         
-        for (int i=0;i<img_size;i++){
-            neg_img[i] = pixels[i] - L;
+        for (int i=0;i<255;i++){
+            trans_table[i] = i - L;
         }
-        return toBuffImg(neg_img, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
     
     public BufferedImage imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
-        int[] bin_img = new int[img_size];
+        int[] trans_table = new int[256];
         
-        for (int i=0;i<img_size;i++){
-            if (pixels[i] >= threshold)
-                bin_img[i] = 255;
-            else bin_img[i] = 0;
+        for (int i=0;i<255;i++){
+            if (i >= threshold)
+                trans_table[i] = 255;
+            else trans_table[i] = 0;
         }
-        return toBuffImg(bin_img, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
     
     public BufferedImage linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
-       int[] newimg = new int[img_size];
-         for (int i=0;i<img_size;i++){
-            newimg[i] = pixels[i] * A + B;
+       int[] trans_table = new int[256];
+         for (int i=0;i<255;i++){
+            trans_table[i] = i * A + B;
         }
-        return toBuffImg(newimg, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
     
     public BufferedImage imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
         int currentB = this.imgBrightness();
         int currentC = this.imgContrast();
-        int[] newimg = new int[img_size];
+        int[] trans_table = new int[256];
            
         int newCo = contrast / currentC;
         int newBr = bright - (newCo*currentB);
         
-        for (int i=0;i<img_size;i++){
-            newimg[i] = pixels[i] * newCo + newBr;
+        for (int i=0;i<255;i++){
+            trans_table[i] = i * newCo + newBr;
         }
-        return toBuffImg(newimg, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
   /*  
@@ -360,16 +361,16 @@ public class ImageClass {
     // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
     // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
     // y el mayor en end_zones.
-        int[] newimg = new int[img_size];
+        int[] trans_table = new int[256];
             
-        for(int i=0;i<img_size;i++){
+        for(int i=0;i<255;i++){
             for(int j=0;j>n_trans;j++){
-                if(pixels[i] > init_zones[j] && pixels[i] < end_zones[j]){
-                    newimg[i] = pixels[i] * A[j] + B[j];
+                if(i > init_zones[j] && i < end_zones[j]){
+                    trans_table[i] = i * A[j] + B[j];
                 }
             }
         }
-        return toBuffImg(newimg, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
     public int imgMaxColor(){ // Devuelve el valor máximo de color de la imagen
@@ -393,12 +394,13 @@ public class ImageClass {
     }
     
     public BufferedImage equalization(){  // Devuelve la imagen con el histograma equalizado
-        int[] newimg = new int[img_size];
+        int[] trans_table = new int[256];
         int [] acHisto = this.getAcumulativeValues();
-        for (int i=0;i<img_size;i++){
-            newimg[i] = acHisto[pixels[i]] * 255 / img_size;
+        
+        for (int i=0;i<255;i++){
+            trans_table[i] = acHisto[i] * 255 / img_size;
         }
-        return toBuffImg(newimg, height, width);
+        return TRANSFORM(pixels,trans_table);
     }
     
     
@@ -429,6 +431,14 @@ public class ImageClass {
         else System.out.println("ERROR: Las imágenes deben ser del mismo tamaño");
         
         return paintInRed(newimg, height, width, threshold);
+    }
+    
+    public BufferedImage TRANSFORM(int[] pix, int[] table){
+        int [] newimg = new int[img_size];
+        for(int i=0;i<img_size;i++){
+            newimg[i] = table[pix[i]];
+        }
+        return toBuffImg(newimg, height, width);
     }
 }
 
