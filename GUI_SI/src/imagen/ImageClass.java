@@ -433,13 +433,30 @@ public class ImageClass {
         return paintInRed(newimg, height, width, threshold);
     }
     
-    public BufferedImage TRANSFORM(int[] pix, int[] table){
+    
+    
+    public BufferedImage gamma(int g){   // Corrección gamma de una imagen
+        int [] trans_table = new int[256];
+
+        for (int i=0;i<255;i++){
+            trans_table[i] = (int) Math.pow((double)(i/255), (double)g)*255;
+        }
+        return TRANSFORM(pixels,trans_table);
+    }
+    
+    
+    
+    
+    
+    public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
         int [] newimg = new int[img_size];
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
         }
         return toBuffImg(newimg, height, width);
     }
+    
+    
 }
 
 
