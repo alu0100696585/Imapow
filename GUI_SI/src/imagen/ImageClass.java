@@ -337,7 +337,7 @@ public class ImageClass {
         }
         //Retornamos la imagen
         picture = eg;
-        return picture;
+        return eg;
     }
     
     public BufferedImage Roi(int ix, int iy, Rectangle rec){    //Devuelve la imagen recortada dentro de rec.
