@@ -5,6 +5,7 @@
  */
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseListener;
@@ -42,6 +43,7 @@ public class JLienzo extends JPanel{
     
     @Override
     protected void paintComponent(Graphics g){
+        g.setColor(Color.RED);
         super.paintComponent(g);
         g.drawImage(img, 1, 1, null);
         g.drawRect(rec.x, rec.y, rec.width, rec.height);

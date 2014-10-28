@@ -38,7 +38,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     ImageFrame(BufferedImage img, GUI root){
         //creando ventana
         this.setResizable(true);
-        this.setSize(500, 600);
+        this.setSize(500, 300);
         
         this.addFocusListener(root);
         
@@ -60,6 +60,10 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         this.setVisible(true);
         
     };
+
+    public JLienzo getLienzo() {
+        return lienzo;
+    }
     
     public ImageClass getImagen() {
         return imagen;

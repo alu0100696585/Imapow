@@ -66,9 +66,11 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         HistogramaValAcu = new javax.swing.JMenuItem();
         Edicion = new javax.swing.JMenu();
         Recortar = new javax.swing.JMenuItem();
+        Brillo_Contraste = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 70));
+        setTitle("Imapow");
+        setMinimumSize(new java.awt.Dimension(340, 25));
         getContentPane().setLayout(null);
 
         Archivo.setText("Archivo");
@@ -128,6 +130,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
             }
         });
         Edicion.add(Recortar);
+
+        Brillo_Contraste.setText("Brillo y Contraste");
+        Edicion.add(Brillo_Contraste);
 
         menu_gui.add(Edicion);
 
@@ -261,6 +266,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Archivo;
+    private javax.swing.JMenuItem Brillo_Contraste;
     private javax.swing.JMenuItem Cargar;
     private javax.swing.JMenu Edicion;
     private javax.swing.JMenuItem EscalaGrises;
@@ -280,11 +286,12 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         indiceVentana = aux.getIndex();
         
         imageActual = aux.getImagen().get_picture();
-        
-        
+   
     }
 
     @Override
     public void focusLost(FocusEvent e) {
+        
+        imagenes.get(getIndiceVentana()).getLienzo().repaint();
     }
 }
