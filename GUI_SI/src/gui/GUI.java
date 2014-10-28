@@ -5,6 +5,9 @@
  */
 package gui;
 
+import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author ImapowSL
  *
  */
-public class GUI extends javax.swing.JFrame {
+public class GUI extends javax.swing.JFrame implements FocusListener {
 
     private BufferedImage imageActual;
     private ArrayList<ImageFrame> imagenes;
@@ -136,20 +139,11 @@ public class GUI extends javax.swing.JFrame {
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
 
-        imagenes.add(new ImageFrame(abrirImagen()));
+        imagenes.add(new ImageFrame(abrirImagen(),this));
         imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
 
     }//GEN-LAST:event_CargarActionPerformed
 
-    private void CalcularFocusImagen() {//funcion para intentar calcular el focus de la ventana
-        for (int i = 0; i < imagenes.size(); i++) {
-            if (imagenes.get(i).getVentana().isFocused()) {
-                setIndiceVentana(imagenes.get(i).getIndex());
-            }
-        }
-
-        imageActual = imagenes.get(getIndiceVentana()).get_img(); //actualizar imagen
-    }
 
     //Método que devuelve una imagen abierta desde archivo
     //Retorna un objeto BufferedImagen
@@ -204,7 +198,8 @@ public class GUI extends javax.swing.JFrame {
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual));               //crear nueva ventana
+            imagenes.add(new ImageFrame(imageActual,this));               //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             imagenes.get(imagenes.size() - 1).EscalaGrises();          //aplicar escala grises
 
         }
@@ -218,7 +213,7 @@ public class GUI extends javax.swing.JFrame {
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual));      //crear nueva ventana
+            imagenes.add(new ImageFrame(imageActual,this));      //crear nueva ventana
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             //cargando el recuadro de la imagen anterior en la nueva imagen 
             imagenes.get(imagenes.size() - 1).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy); //aplicar recorte
@@ -258,38 +253,10 @@ public class GUI extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        }
-        catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUI().setVisible(true);
-            }
-        });
+        
+       GUI programa = new GUI();
+       programa.setVisible(true);
+            
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -304,4 +271,20 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu Ver;
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void focusGained(FocusEvent e) {
+    
+        ImageFrame aux = (ImageFrame)e.getSource();
+        
+        indiceVentana = aux.getIndex();
+        
+        imageActual = aux.getImagen().get_picture();
+        
+        
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+    }
 }

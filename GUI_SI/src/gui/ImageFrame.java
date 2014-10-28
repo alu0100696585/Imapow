@@ -25,41 +25,22 @@ import javax.swing.JPanel;
  *
  * @author God
  */
-public class ImageFrame implements MouseListener, MouseMotionListener{
+public class ImageFrame extends JFrame implements MouseListener, MouseMotionListener{
+    
     private ImageClass imagen;
-
-    public ImageClass getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(ImageClass imagen) {
-        this.imagen = imagen;
-    }
-    private JFrame ventana;
-
-    public JFrame getVentana() {
-        return ventana;
-    }
     private JLienzo lienzo;
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
     private int index;//variable indice de la ventana
     public int ix;
     public int iy;
     public int fx;
     public int fy; // variables para la seleccion sobre la imagen
-    
-    ImageFrame(BufferedImage img){
+
+    ImageFrame(BufferedImage img, GUI root){
         //creando ventana
-        ventana = new JFrame();
-        ventana.setResizable(true);
-        ventana.setSize(400, 300);
+        this.setResizable(true);
+        this.setSize(500, 600);
+        
+        this.addFocusListener(root);
         
         //inicializacion del indice
         index = -1;
@@ -71,14 +52,31 @@ public class ImageFrame implements MouseListener, MouseMotionListener{
         lienzo = new JLienzo(img, this);
         
         //añadiendo el lienzo
-        ventana.add(lienzo);
+        this.add(lienzo);
         
         lienzo.repaint();
                 
         //ventana visible
-        ventana.setVisible(true);
+        this.setVisible(true);
         
     };
+    
+    public ImageClass getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(ImageClass imagen) {
+        this.imagen = imagen;
+    }
+    
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
     
     public BufferedImage get_img(){
         return imagen.get_picture();
