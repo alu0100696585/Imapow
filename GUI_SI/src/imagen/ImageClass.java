@@ -34,11 +34,7 @@ public class ImageClass {
     private int width;              //Ancho de la imagen
     private ArrayList<Color> image; //Color de cada pixel en la imagen 
     private int pixels[];           //Array de enteros de la imagen (en escala de grises)
-    //private int colorValues[];     //Array de colores del histograma 
-
-    public int[] getPixels() {
-        return pixels;
-    }
+    private int colorValues[];     //Array de colores del histograma 
     
     //constantes para la conversion a gris
     public static final double NTSC_R = 0.299;
@@ -51,7 +47,7 @@ public class ImageClass {
    
         picture = img;
         image = new ArrayList<Color>();
-       // colorValues = new int[256];
+        colorValues = new int[256];
   
         
         try{
@@ -98,7 +94,7 @@ public class ImageClass {
         height = l;       //Largo de la imagen
         width = w;        //Ancho de la imagen
         pixels = img;     //Array de bytes de la imagen
-        //colorValues = new int[256];
+        colorValues = new int[256];
     }
     
     
@@ -108,7 +104,7 @@ public class ImageClass {
         width = other.width;       //Ancho de la imagen
         image = other.image;       //Imagen
         pixels = other.pixels;     //Array de pixeles
-        //colorValues = other.colorValues;
+        colorValues = other.colorValues;
     }
     
  /*   
@@ -147,18 +143,34 @@ public class ImageClass {
         }
     }
     
-
+*/
+    public int[] getPixels() {  //Devuelve el array de valores de color de la imagen
+        return pixels;
+    }
+    
     
     public int[] getColorValues(){ //Devuelve los valores del histograma de color
         for (int i=0;i<255;i++){
-            pixels[i]=0;
+            colorValues[i]=0;
         }
         for (int i=0;i<img_size;i++){
-            pixels[i] = image.get(i);
+            colorValues[pixels[i]]+=1;
         }
-        return pixels;
+        return colorValues;
     };
-    */
+    
+    
+    public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
+        int [] acumulativeValues = new int[256];
+        for (int i=0;i<255;i++){
+            acumulativeValues[i]=0;
+        }
+        for (int i=0;i<img_size;i++){
+            acumulativeValues[pixels[i]]= acumulativeValues[pixels[i]-1] + colorValues[pixels[i]]+1;
+        }
+        return acumulativeValues;
+    }
+    
    
     
     public BufferedImage get_picture(){
@@ -190,12 +202,20 @@ public class ImageClass {
         //getColorValues();
         //Otras funciones que hagan falta mas adelante//
     }
-        
-        
-    public void showHistogram(){ // Muestra el histograma de color de la imagen
-        //SACAR VENTANA???
+    
+    
+    public BufferedImage toBuffImg(int[] pix, int h, int w){
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                newimg.setRGB(i, j, pix[getPos(i,j)]);
+            }
+        }
+        return newimg;
     }
     
+    
+        
     public int imgBrightness(){ // Devuelve el brillo (media de color) de la imagen
         int suma = 0;
         for(int i=0;i<img_size;i++){
@@ -221,53 +241,53 @@ public class ImageClass {
     
     
     
-    public int[] imgNegative(){  // Devuelve el negativo (complemento) de la imagen
-        int[] neg_img = new int[img_size];
+    public BufferedImage imgNegative(){  // Devuelve el negativo (complemento) de la imagen
+        int[] trans_table = new int[256];
         int L = 255;
         
-        for (int i=0;i<img_size;i++){
-            neg_img[i] = pixels[i] - L;
+        for (int i=0;i<255;i++){
+            trans_table[i] = i - L;
         }
-        return neg_img;
+        return TRANSFORM(pixels,trans_table);
     }
     
     
-    public int[] imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
-        int[] bin_img = new int[img_size];
+    public BufferedImage imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
+        int[] trans_table = new int[256];
         
-        for (int i=0;i<img_size;i++){
-            if (pixels[i] >= threshold)
-                bin_img[i] = 255;
-            else bin_img[i] = 0;
+        for (int i=0;i<255;i++){
+            if (i >= threshold)
+                trans_table[i] = 255;
+            else trans_table[i] = 0;
         }
-        return bin_img;
+        return TRANSFORM(pixels,trans_table);
     }
     
     
-    public int[] linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
-       int[] newimg = new int[img_size];
-         for (int i=0;i<img_size;i++){
-            newimg[i] = pixels[i] * A + B;
+    public BufferedImage linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
+       int[] trans_table = new int[256];
+         for (int i=0;i<255;i++){
+            trans_table[i] = i * A + B;
         }
-        return newimg;
+        return TRANSFORM(pixels,trans_table);
     }
     
     
-    public int[] imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
+    public BufferedImage imgSetByC(int bright, int contrast){  // Cambia el brillo y contraste de la imagen
         int currentB = this.imgBrightness();
         int currentC = this.imgContrast();
-        int[] newimg = new int[img_size];
+        int[] trans_table = new int[256];
            
         int newCo = contrast / currentC;
         int newBr = bright - (newCo*currentB);
         
-        for (int i=0;i<img_size;i++){
-            newimg[i] = pixels[i] * newCo + newBr;
+        for (int i=0;i<255;i++){
+            trans_table[i] = i * newCo + newBr;
         }
-        return newimg;
+        return TRANSFORM(pixels,trans_table);
     }
     
-    
+  /*  
     public int[] ROI(int x, int y, int len, int wid){  // Genera una subimagen de la imagen actual
         int[] roi = new int[len*wid];
         int ind = 0;
@@ -279,7 +299,7 @@ public class ImageClass {
         }
         return roi;
     }
-    
+    */
     
     
     public int colorInPos(int x, int y){  // Devuelve el valor de color del punto X,Y
@@ -299,7 +319,7 @@ public class ImageClass {
         return enthropy.intValue();
     }
 
-    public BufferedImage escalaGrises() {
+    public BufferedImage escalaGrises() {   // Devuelve la imagen en escala de grises
         
         BufferedImage eg = picture;
         
@@ -320,25 +340,157 @@ public class ImageClass {
         return picture;
     }
     
-    public BufferedImage Roi(int ix, int iy, Rectangle rec){
-    
+    public BufferedImage Roi(int ix, int iy, Rectangle rec){    //Devuelve la imagen recortada dentro de rec.
         BufferedImage roi = new BufferedImage(rec.width,rec.height,BufferedImage.TYPE_INT_RGB);
         
         int dx = ix;
         int dy = iy;
-       
-        
+               
         for(int i = 0; i<rec.width; i++){
-            for(int j = 0; j<rec.height; j++){
-                
-                    roi.setRGB(i, j, picture.getRGB(i + dx, j + dy));
-                
+            for(int j = 0; j<rec.height; j++){               
+                    roi.setRGB(i, j, picture.getRGB(i + dx, j + dy));              
             }
-        }
-        
+        }      
         picture = roi;
         return roi;
     }
+    
+    
+    
+    public BufferedImage linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
+    // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
+    // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
+    // y el mayor en end_zones.
+        int[] trans_table = new int[256];
+            
+        for(int i=0;i<255;i++){
+            for(int j=0;j>n_trans;j++){
+                if(i > init_zones[j] && i < end_zones[j]){
+                    trans_table[i] = i * A[j] + B[j];
+                }
+            }
+        }
+        return TRANSFORM(pixels,trans_table);
+    }
+    
+    public int imgMaxColor(){ // Devuelve el valor máximo de color de la imagen
+        int max = 0;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]>max){
+             max = pixels[i];
+             }
+         }
+        return max;
+    }
+    
+    public int imgMinColor(){ // Devuelve el valor minimo de color de la imagen
+        int min = 999999;
+         for (int i=0;i<img_size;i++){
+             if(pixels[i]<min){
+             min = pixels[i];
+             }
+         }
+        return min;
+    }
+    
+    public BufferedImage equalization(){  // Devuelve la imagen con el histograma equalizado
+        int[] trans_table = new int[256];
+        int [] acHisto = this.getAcumulativeValues();
+        
+        for (int i=0;i<255;i++){
+            trans_table[i] = acHisto[i] * 255 / img_size;
+        }
+        return TRANSFORM(pixels,trans_table);
+    }
+    
+    
+    public BufferedImage paintInRed(int []pix, int h, int w, int threshold){
+        Color red = new Color(255, 0, 0); // Color rojo
+
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                if(pix[i] < threshold){
+                    newimg.setRGB(i, j, pix[getPos(i,j)]);
+                }
+                else newimg.setRGB(i, j, red.getRGB());
+            }
+        }
+        return newimg;
+    }
+    
+    public BufferedImage compare(ImageClass im, int threshold){  
+    //Devuelve la imagen difetencia de comparar la imagen actual con la imagen im, con un umbral de error threshold
+        int [] newimg = new int[img_size];
+        if (this.img_size == im.img_size){
+            int [] pixels2 = im.getPixels();
+            for (int i=0;i<img_size;i++){
+                    newimg[i] = Math.abs(this.pixels[i] - pixels2[i]);
+            }
+        }
+        else System.out.println("ERROR: Las imágenes deben ser del mismo tamaño");
+        
+        return paintInRed(newimg, height, width, threshold);
+    }
+    
+    
+    
+    public BufferedImage gamma(int g){   // Corrección gamma de una imagen
+        int [] trans_table = new int[256];
+
+        for (int i=0;i<255;i++){
+            trans_table[i] = (int) Math.pow((double)(i/255), (double)g)*255;
+        }
+        return TRANSFORM(pixels,trans_table);
+    }
+    
+    
+    public BufferedImage HistogramSpecification(ImageClass im2){ // Especificacion del histograma con otra imagen de muestra
+        int[] imhisto = this.getAcumulativeValues();
+        int[] imhisto2 = im2.getAcumulativeValues();
+        int[] trans_table = new int[256];
+        
+        for (int i=0;i<255;i++){
+            imhisto[i]/=img_size;
+            imhisto2[i]/=im2.img_size;
+        }
+        
+        for (int i=0;i<255;i++){
+            for (int j=0;j<255;j++){
+                if (imhisto[i] == imhisto2[j]){
+                    trans_table[i] = j;
+                }
+                else if (imhisto[i] < imhisto[j]){
+                    if(j != 0 && j != 255){
+                        int aux = Math.abs(imhisto[i] - imhisto2[j]);
+                        int aux2 = Math.abs(imhisto[i] - imhisto2[j-1]);
+                        if(aux < aux2){
+                            trans_table[i] = j;
+                        }
+                        else trans_table[i] = j-1;
+                    }
+                    else{
+                        trans_table[i] = j;
+                            
+                    }
+                }
+            }
+        }
+        return TRANSFORM(pixels, trans_table);
+    }
+    
+    
+    
+    
+    public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
+        int [] newimg = new int[img_size];
+        for(int i=0;i<img_size;i++){
+            newimg[i] = table[pix[i]];
+        }
+        return toBuffImg(newimg, height, width);
+    }
+    
+    
 }
 
 
