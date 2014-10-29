@@ -6,16 +6,21 @@
 
 package gui;
 
+import imagen.ImageClass;
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author MAURI
  */
 public class Brillo_Contraste extends javax.swing.JFrame {
 
+    ImageClass bc;
+    
     /**
      * Creates new form Brillo_Contraste
      */
-    public Brillo_Contraste() {
+    public Brillo_Contraste(BufferedImage img) {
         initComponents();
     }
 
@@ -89,7 +94,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Brillo_Contraste().setVisible(true);
+              //  new Brillo_Contraste().setVisible(true);
             }
         });
     }

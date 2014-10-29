@@ -28,7 +28,6 @@ public class HistogramaVAC extends JFrame {
      */
     public HistogramaVAC(int[] pixels) {
         this.setResizable(false);
-        this.setSize(255, 255);
         this.setVisible(true);
         this.setTitle("Histograma acumulado");
         pixeles = pixels;
@@ -36,6 +35,7 @@ public class HistogramaVAC extends JFrame {
         rellenar_datos(pixeles);
         redimensionar();
         JLabel n_h = new JLabel("0                                                                         255");
+        this.setSize(255 + 6, 255 + n_h.getHeight() + 50); // hay que tener en cuenta el tamaño del label y el tamano por defecto de las ventanas de window
         this.add(new HistogramaVAC.Grafico(), BorderLayout.CENTER);
         this.add(n_h, BorderLayout.SOUTH);
     }
