@@ -56,6 +56,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HistogramaValAcuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="Diferencia">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Diferencia con otra im&#xe1;gen"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DiferenciaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="HistEspecific">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Especificacio&#xf3;n histograma"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HistEspecificActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="Edicion">
@@ -75,6 +91,22 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Brillo y Contraste"/>
               </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="Ecualizar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ecualizar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EcualizarActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="Gamma">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Correcci&#xf3;n gamma"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GammaActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

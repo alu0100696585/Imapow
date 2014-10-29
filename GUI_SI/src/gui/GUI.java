@@ -5,7 +5,9 @@
  */
 package gui;
 
+import imagen.ImageClass;
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
@@ -64,9 +66,13 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         EscalaGrises = new javax.swing.JMenuItem();
         HistogramaValAbsol = new javax.swing.JMenuItem();
         HistogramaValAcu = new javax.swing.JMenuItem();
+        Diferencia = new javax.swing.JMenuItem();
+        HistEspecific = new javax.swing.JMenuItem();
         Edicion = new javax.swing.JMenu();
         Recortar = new javax.swing.JMenuItem();
         Brillo_Contraste = new javax.swing.JMenuItem();
+        Ecualizar = new javax.swing.JMenuItem();
+        Gamma = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -119,6 +125,22 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         });
         Ver.add(HistogramaValAcu);
 
+        Diferencia.setText("Diferencia con otra imágen");
+        Diferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DiferenciaActionPerformed(evt);
+            }
+        });
+        Ver.add(Diferencia);
+
+        HistEspecific.setText("Especificacioón histograma");
+        HistEspecific.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistEspecificActionPerformed(evt);
+            }
+        });
+        Ver.add(HistEspecific);
+
         menu_gui.add(Ver);
 
         Edicion.setText("Edicion");
@@ -134,6 +156,22 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         Brillo_Contraste.setText("Brillo y Contraste");
         Edicion.add(Brillo_Contraste);
 
+        Ecualizar.setText("Ecualizar");
+        Ecualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EcualizarActionPerformed(evt);
+            }
+        });
+        Edicion.add(Ecualizar);
+
+        Gamma.setText("Corrección gamma");
+        Gamma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GammaActionPerformed(evt);
+            }
+        });
+        Edicion.add(Gamma);
+
         menu_gui.add(Edicion);
 
         setJMenuBar(menu_gui);
@@ -144,11 +182,10 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
 
-        imagenes.add(new ImageFrame(abrirImagen(),this));
+        imagenes.add(new ImageFrame(abrirImagen(), this));
         imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
 
     }//GEN-LAST:event_CargarActionPerformed
-
 
     //Método que devuelve una imagen abierta desde archivo
     //Retorna un objeto BufferedImagen
@@ -197,13 +234,13 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     private void EscalaGrisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscalaGrisesActionPerformed
         // TODO add your handling code here:
-        
+
         if (imageActual == null) {
             JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual,this));               //crear nueva ventana
+            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             imagenes.get(imagenes.size() - 1).EscalaGrises();          //aplicar escala grises
 
@@ -212,13 +249,13 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     private void RecortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecortarActionPerformed
         // TODO add your handling code here:
-        
+
         if (imageActual == null) {
             JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual,this));      //crear nueva ventana
+            imagenes.add(new ImageFrame(imageActual, this));      //crear nueva ventana
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             //cargando el recuadro de la imagen anterior en la nueva imagen 
             imagenes.get(imagenes.size() - 1).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy); //aplicar recorte
@@ -227,7 +264,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     private void HistogramaValAbsolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAbsolActionPerformed
         // TODO add your handling code here:
-        
+
         if (imageActual == null) {
             JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
                     "Error", JOptionPane.WARNING_MESSAGE);
@@ -241,7 +278,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     private void HistogramaValAcuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistogramaValAcuActionPerformed
         // TODO add your handling code here:
-        
+
         if (imageActual == null) {
             JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
                     "Error", JOptionPane.WARNING_MESSAGE);
@@ -253,23 +290,93 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         }
     }//GEN-LAST:event_HistogramaValAcuActionPerformed
 
+    private void EcualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EcualizarActionPerformed
+        // TODO add your handling code here:
+
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            imagenes.get(imagenes.size() - 1).Ecualizar();          //aplicar ecualizacion
+
+        }
+    }//GEN-LAST:event_EcualizarActionPerformed
+
+    private void DiferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiferenciaActionPerformed
+        // TODO add your handling code here:
+
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            String th = JOptionPane.showInputDialog("Ingrese el umbral de comparacion: ");
+
+            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().compare(new ImageClass(abrirImagen()), Integer.parseInt(th)));          //aplicar diferencia
+
+        }
+    }//GEN-LAST:event_DiferenciaActionPerformed
+
+    private void GammaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GammaActionPerformed
+        // TODO add your handling code here:
+
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            String g = JOptionPane.showInputDialog("Ingrese la corrección gamma: ");
+
+            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().gamma(Integer.parseInt(g)));          //aplicar correccion gamma
+
+        }
+    }//GEN-LAST:event_GammaActionPerformed
+
+    private void HistEspecificActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistEspecificActionPerformed
+        // TODO add your handling code here:
+
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().HistogramSpecification(new ImageClass(abrirImagen())));          //aplicar especificacion histograma
+
+        }
+    }//GEN-LAST:event_HistEspecificActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        
-       GUI programa = new GUI();
-       programa.setVisible(true);
-            
+
+        GUI programa = new GUI();
+        programa.setVisible(true);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Archivo;
     private javax.swing.JMenuItem Brillo_Contraste;
     private javax.swing.JMenuItem Cargar;
+    private javax.swing.JMenuItem Diferencia;
+    private javax.swing.JMenuItem Ecualizar;
     private javax.swing.JMenu Edicion;
     private javax.swing.JMenuItem EscalaGrises;
+    private javax.swing.JMenuItem Gamma;
+    private javax.swing.JMenuItem HistEspecific;
     private javax.swing.JMenuItem HistogramaValAbsol;
     private javax.swing.JMenuItem HistogramaValAcu;
     private javax.swing.JMenuItem Recortar;
@@ -280,18 +387,19 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
     @Override
     public void focusGained(FocusEvent e) {
-    
-        ImageFrame aux = (ImageFrame)e.getSource();
-        
+
+        ImageFrame aux = (ImageFrame) e.getSource();
+
         indiceVentana = aux.getIndex();
-        
+
         imageActual = aux.getImagen().get_picture();
-   
+
     }
 
     @Override
     public void focusLost(FocusEvent e) {
-        
-        imagenes.get(getIndiceVentana()).getLienzo().repaint();
+
+        imagenes.get(getIndiceVentana()).getLienzo().setRectangle(new Rectangle(-1, -1, -1, -1));//para que el rectangulo desaparezca
+        imagenes.get(getIndiceVentana()).getLienzo().repaint();                               //al quitar focus de la ventana
     }
 }
