@@ -76,8 +76,7 @@ public class ImageClass {
                 
                 //int promedio = (int)((r+g+b)/3);
                     
-                pixels[i*height+j] =(int)(r*NTSC_R + g*NTSC_G + b*NTSC_B);
-                    
+                pixels[i*height+j] =(int)(r*NTSC_R + g*NTSC_G + b*NTSC_B);                   
                 }
             }
             
@@ -178,7 +177,7 @@ public class ImageClass {
     }
     
     public int getPos(int x, int y){ //Devuelve la posicion de la imagen de coordenadas XY
-        return (x-1)*img_size+y-1;
+        return x*width+y;
     }
     
     
@@ -205,7 +204,7 @@ public class ImageClass {
     
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
-        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
         for(int i=0;i<h;i++){
             for(int j=0;j<w;j++){
                 newimg.setRGB(i, j, pix[getPos(i,j)]);
@@ -398,7 +397,8 @@ public class ImageClass {
         int [] acHisto = this.getAcumulativeValues();
         
         for (int i=0;i<255;i++){
-            trans_table[i] = acHisto[i] * 255 / img_size;
+            trans_table[i] = Math.max(0, Math.round((256/img_size)*acHisto[i])-1);
+            System.out.println(trans_table[i]);
         }
         return TRANSFORM(pixels,trans_table);
     }
