@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -27,11 +29,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author ImapowSL
  *
  */
-public class GUI extends javax.swing.JFrame implements FocusListener {
+public class GUI extends javax.swing.JFrame implements FocusListener, ChangeListener {
 
     private BufferedImage imageActual;
     private ArrayList<ImageFrame> imagenes;
     private int indiceVentana;
+    private Brillo_Contraste bc;
 
     public int getIndiceVentana() {
         return indiceVentana;
@@ -70,9 +73,10 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         HistEspecific = new javax.swing.JMenuItem();
         Edicion = new javax.swing.JMenu();
         Recortar = new javax.swing.JMenuItem();
-        Brillo_Contraste = new javax.swing.JMenuItem();
         Ecualizar = new javax.swing.JMenuItem();
         Gamma = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        Brillo_Contraste = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -153,9 +157,6 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         });
         Edicion.add(Recortar);
 
-        Brillo_Contraste.setText("Brillo y Contraste");
-        Edicion.add(Brillo_Contraste);
-
         Ecualizar.setText("Ecualizar");
         Ecualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,6 +174,18 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         Edicion.add(Gamma);
 
         menu_gui.add(Edicion);
+
+        jMenu1.setText("Herramientas");
+
+        Brillo_Contraste.setText("Brillo y Contraste");
+        Brillo_Contraste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Brillo_ContrasteActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Brillo_Contraste);
+
+        menu_gui.add(jMenu1);
 
         setJMenuBar(menu_gui);
 
@@ -356,6 +369,12 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
         }
     }//GEN-LAST:event_HistEspecificActionPerformed
 
+    private void Brillo_ContrasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Brillo_ContrasteActionPerformed
+        // TODO add your handling code here:7
+        bc = new Brillo_Contraste(this);
+        bc.setVisible(true);
+    }//GEN-LAST:event_Brillo_ContrasteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -382,6 +401,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
     private javax.swing.JMenuItem Recortar;
     private javax.swing.JMenuItem Salir;
     private javax.swing.JMenu Ver;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
 
@@ -401,5 +421,13 @@ public class GUI extends javax.swing.JFrame implements FocusListener {
 
         imagenes.get(getIndiceVentana()).getLienzo().setRectangle(new Rectangle(-1, -1, -1, -1));//para que el rectangulo desaparezca
         imagenes.get(getIndiceVentana()).getLienzo().repaint();                               //al quitar focus de la ventana
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        int b = bc.get_sliderBrillo();
+        int c = bc.get_sliderContraste();
+        
+        imagenes.get(getIndiceVentana()).ByC(b,c);
     }
 }

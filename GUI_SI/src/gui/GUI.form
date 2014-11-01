@@ -87,11 +87,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecortarActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="Brillo_Contraste">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Brillo y Contraste"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="Ecualizar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ecualizar"/>
@@ -106,6 +101,21 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GammaActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Herramientas"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="Brillo_Contraste">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Brillo y Contraste"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Brillo_ContrasteActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

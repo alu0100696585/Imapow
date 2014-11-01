@@ -6,8 +6,6 @@
 
 package gui;
 
-import imagen.ImageClass;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,13 +13,22 @@ import java.awt.image.BufferedImage;
  */
 public class Brillo_Contraste extends javax.swing.JFrame {
 
-    ImageClass bc;
     
     /**
      * Creates new form Brillo_Contraste
      */
-    public Brillo_Contraste(BufferedImage img) {
+    public Brillo_Contraste(GUI root) {
         initComponents();
+        sliderBrillo.addChangeListener(root);
+        sliderContraste.addChangeListener(root);
+    }
+    
+    public int get_sliderBrillo(){
+        return sliderBrillo.getValue();
+    }
+    
+    public int get_sliderContraste(){
+        return sliderContraste.getValue();
     }
 
     /**
@@ -43,19 +50,19 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(400, 200));
         getContentPane().setLayout(null);
         getContentPane().add(sliderBrillo);
-        sliderBrillo.setBounds(20, 30, 280, 16);
+        sliderBrillo.setBounds(60, 50, 280, 26);
         getContentPane().add(sliderContraste);
-        sliderContraste.setBounds(20, 100, 280, 16);
+        sliderContraste.setBounds(60, 180, 280, 26);
 
         labelBrillo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelBrillo.setText("Brillo");
         getContentPane().add(labelBrillo);
-        labelBrillo.setBounds(300, 30, 50, 19);
+        labelBrillo.setBounds(180, 20, 50, 19);
 
         labelContraste.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelContraste.setText("Contraste");
         getContentPane().add(labelContraste);
-        labelContraste.setBounds(300, 100, 70, 19);
+        labelContraste.setBounds(160, 120, 70, 19);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -92,11 +99,11 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+      /*  java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              //  new Brillo_Contraste().setVisible(true);
+                new Brillo_Contraste().setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
