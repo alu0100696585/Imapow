@@ -410,14 +410,18 @@ public class ImageClass {
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
         for(int i=0;i<h;i++){
             for(int j=0;j<w;j++){
-                if(pix[i] < threshold){
+                if(pix[getPos(i,j)] < threshold){
                     newimg.setRGB(i, j, pix[getPos(i,j)]);
                 }
-                else newimg.setRGB(i, j, red.getRGB());
+                else {
+                    newimg.setRGB(i, j, red.getRGB());
+                    }
+                }
             }
-        }
         return newimg;
-    }
+        }
+        
+    
     
     public BufferedImage compare(ImageClass im, int threshold){  
     //Devuelve la imagen difetencia de comparar la imagen actual con la imagen im, con un umbral de error threshold
@@ -487,7 +491,6 @@ public class ImageClass {
         int [] newimg = new int[img_size];
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
-            System.out.println(newimg[i]);
         }
         return toBuffImg(newimg, height, width);
     }
