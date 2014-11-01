@@ -435,11 +435,12 @@ public class ImageClass {
     
     
     
-    public BufferedImage gamma(int g){   // Corrección gamma de una imagen
+    public BufferedImage gamma(float g){   // Corrección gamma de una imagen
         int [] trans_table = new int[256];
 
         for (int i=0;i<255;i++){
-            trans_table[i] = (int) Math.pow((double)(i/255), (double)g)*255;
+            float index = i;
+            trans_table[i] = (int) (Math.pow((float)(index/255), (float)g)*255);
         }
         return TRANSFORM(pixels,trans_table);
     }
@@ -486,6 +487,7 @@ public class ImageClass {
         int [] newimg = new int[img_size];
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
+            System.out.println(newimg[i]);
         }
         return toBuffImg(newimg, height, width);
     }
