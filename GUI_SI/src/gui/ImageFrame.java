@@ -41,7 +41,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     ImageFrame(BufferedImage img, GUI root) {
         //creando ventana
         this.setResizable(true);
-        this.setSize(300, 300);
+        this.setSize(400, 400);
 
         this.addFocusListener(root);
 
@@ -155,10 +155,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
-        //ix = e.getX();
-        //iy = e.getY();
-        //lValorColor.setText("valor: " + imagen.colorInPos(ix, iy));
+        lValorColor.setText("valor: " + imagen.colorInPos(e.getX(), e.getY()));
         //lienzo.repaint();
     }
 

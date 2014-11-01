@@ -47,22 +47,22 @@ public class Brillo_Contraste extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Brillo y Contraste");
-        setMinimumSize(new java.awt.Dimension(400, 200));
+        setMinimumSize(new java.awt.Dimension(400, 400));
         getContentPane().setLayout(null);
         getContentPane().add(sliderBrillo);
-        sliderBrillo.setBounds(60, 50, 280, 26);
+        sliderBrillo.setBounds(50, 80, 280, 26);
         getContentPane().add(sliderContraste);
-        sliderContraste.setBounds(60, 180, 280, 26);
+        sliderContraste.setBounds(50, 180, 280, 26);
 
         labelBrillo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelBrillo.setText("Brillo");
         getContentPane().add(labelBrillo);
-        labelBrillo.setBounds(180, 20, 50, 19);
+        labelBrillo.setBounds(170, 40, 50, 19);
 
         labelContraste.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelContraste.setText("Contraste");
         getContentPane().add(labelContraste);
-        labelContraste.setBounds(160, 120, 70, 19);
+        labelContraste.setBounds(160, 140, 70, 19);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
