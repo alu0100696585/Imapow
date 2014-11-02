@@ -160,12 +160,10 @@ public class ImageClass {
     
     
     public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
-        int [] acumulativeValues = new int[256];
-        for (int i=0;i<255;i++){
-            acumulativeValues[i]=0;
-        }
-        for (int i=0;i<img_size;i++){
-            acumulativeValues[pixels[i]]= acumulativeValues[pixels[i]-1] + colorValues[pixels[i]]+1;
+        int [] acumulativeValues = this.getColorValues();
+
+        for (int i=1;i<255;i++){
+            acumulativeValues[i] += acumulativeValues[i-1];
         }
         return acumulativeValues;
     }
@@ -444,7 +442,7 @@ public class ImageClass {
 
         for (int i=0;i<255;i++){
             float index = i;
-            trans_table[i] = (int) (Math.pow((float)(index/255), (float)g)*255);
+            trans_table[i] = (int) (Math.pow((float)(index/255), g)*255);
         }
         return TRANSFORM(pixels,trans_table);
     }
@@ -453,30 +451,42 @@ public class ImageClass {
     public BufferedImage HistogramSpecification(ImageClass im2){ // Especificacion del histograma con otra imagen de muestra
         int[] imhisto = this.getAcumulativeValues();
         int[] imhisto2 = im2.getAcumulativeValues();
+        
+        float []imh1 = new float[256];
+        float []imh2 = new float[256];
+        
+        for(int i=0;i<255;i++){
+            imh1[i]=(float)imhisto[i];
+            imh2[i]=(float)imhisto2[i];
+        }
         int[] trans_table = new int[256];
         
         for (int i=0;i<255;i++){
-            imhisto[i]/=img_size;
-            imhisto2[i]/=im2.img_size;
+            imh1[i]/=img_size;
+            imh2[i]/=im2.img_size;
         }
         
         for (int i=0;i<255;i++){
             for (int j=0;j<255;j++){
-                if (imhisto[i] == imhisto2[j]){
+                if (imh1[i] == imh2[j]){
                     trans_table[i] = j;
+                    break;
                 }
-                else if (imhisto[i] < imhisto[j]){
+                else if (imh1[i] < imh2[j]){
                     if(j != 0 && j != 255){
-                        int aux = Math.abs(imhisto[i] - imhisto2[j]);
-                        int aux2 = Math.abs(imhisto[i] - imhisto2[j-1]);
+                        float aux = Math.abs(imh1[i] - imh2[j]);
+                        float aux2 = Math.abs(imh1[i] - imh2[j-1]);
                         if(aux < aux2){
                             trans_table[i] = j;
+                            break;
                         }
-                        else trans_table[i] = j-1;
+                        else {
+                            trans_table[i] = j-1;
+                            break;
+                        }
                     }
                     else{
-                        trans_table[i] = j;
-                            
+                        trans_table[i] = j;       
                     }
                 }
             }
@@ -491,6 +501,9 @@ public class ImageClass {
         int [] newimg = new int[img_size];
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
+            System.out.println(pix[i]);
+            System.out.println(" -> "); 
+            System.out.println(newimg[i]);
         }
         return toBuffImg(newimg, height, width);
     }
