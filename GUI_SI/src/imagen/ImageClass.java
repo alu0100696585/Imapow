@@ -398,7 +398,7 @@ public class ImageClass {
         
         for (int i=0;i<255;i++){
             trans_table[i] = Math.max(0, Math.round((256/img_size)*acHisto[i])-1);
-            System.out.println(trans_table[i]);
+            //System.out.println(trans_table[i]);
         }
         return TRANSFORM(pixels,trans_table);
     }
