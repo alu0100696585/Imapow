@@ -175,7 +175,7 @@ public class ImageClass {
     }
     
     public int getPos(int x, int y){ //Devuelve la posicion de la imagen de coordenadas XY
-        return x*width+y;
+        return x*height+y;
     }
     
     
@@ -487,8 +487,8 @@ public class ImageClass {
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
-        for(int i=0;i<h;i++){
-            for(int j=0;j<w;j++){
+        for(int i=0;i<w;i++){
+            for(int j=0;j<h;j++){
                 newimg.setRGB(i, j, pix[getPos(i,j)]);
             }
         }
