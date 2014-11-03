@@ -199,19 +199,7 @@ public class ImageClass {
         //getColorValues();
         //Otras funciones que hagan falta mas adelante//
     }
-    
-    
-    public BufferedImage toBuffImg(int[] pix, int h, int w){
-        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
-        for(int i=0;i<h;i++){
-            for(int j=0;j<w;j++){
-                newimg.setRGB(i, j, pix[getPos(i,j)]);
-            }
-        }
-        return newimg;
-    }
-    
-    
+
         
     public int imgBrightness(){ // Devuelve el brillo (media de color) de la imagen
         int suma = 0;
@@ -395,13 +383,10 @@ public class ImageClass {
         int [] acHisto = this.getAcumulativeValues();
         
         for (int i=0;i<255;i++){
-<<<<<<< HEAD
             trans_table[i] = Math.max(0, Math.round((256/img_size)*acHisto[i])-1);
             //System.out.println(trans_table[i]);
-=======
             trans_table[i] = (int) Math.max(0, Math.round(((float)256/(float)img_size)*acHisto[i])-1);
-            System.out.println(trans_table[i]);
->>>>>>> origin/Luis3
+            //System.out.println(trans_table[i]);
         }
         return TRANSFORM(pixels,trans_table);
     }
@@ -500,15 +485,24 @@ public class ImageClass {
     }
     
     
+    public BufferedImage toBuffImg(int[] pix, int h, int w){
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                newimg.setRGB(i, j, pix[getPos(i,j)]);
+            }
+        }
+        return newimg;
+    }
     
     
     public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
         int [] newimg = new int[img_size];
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
-            System.out.println(pix[i]);
+           /* System.out.println(pix[i]);
             System.out.println(" -> "); 
-            System.out.println(newimg[i]);
+            System.out.println(newimg[i]);*/
         }
         return toBuffImg(newimg, height, width);
     }
