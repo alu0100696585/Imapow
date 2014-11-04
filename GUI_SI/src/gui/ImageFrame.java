@@ -102,9 +102,9 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     }
 
-    public void Ecualizar() {
+    public BufferedImage Ecualizar() {
 
-        lienzo.setImag(imagen.equalization());
+        return imagen.equalization();
 
     }
 

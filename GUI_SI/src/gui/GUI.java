@@ -311,10 +311,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).Ecualizar(),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            imagenes.get(imagenes.size() - 1).Ecualizar();          //aplicar ecualizacion
-
         }
     }//GEN-LAST:event_EcualizarActionPerformed
 
@@ -328,11 +326,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         else {
 
             String th = JOptionPane.showInputDialog("Ingrese el umbral de comparacion: ");
-
-            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().compare(new ImageClass(abrirImagen()), Integer.parseInt(th)),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().compare(new ImageClass(abrirImagen()), Integer.parseInt(th)));          //aplicar diferencia
-
         }
     }//GEN-LAST:event_DiferenciaActionPerformed
 
@@ -347,9 +343,10 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
             String g = JOptionPane.showInputDialog("Ingrese la corrección gamma: ");
 
-            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().gamma(Integer.parseInt(g)),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().gamma(Integer.parseInt(g)));          //aplicar correccion gamma
+            
 
         }
     }//GEN-LAST:event_GammaActionPerformed
@@ -362,10 +359,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().HistogramSpecification(new ImageClass(abrirImagen())),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            imagenes.get(imagenes.size() - 1).getLienzo().setImag(imagenes.get(imagenes.size() - 1).getImagen().HistogramSpecification(new ImageClass(abrirImagen())));          //aplicar especificacion histograma
-
         }
     }//GEN-LAST:event_HistEspecificActionPerformed
 
@@ -418,9 +414,6 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     @Override
     public void focusLost(FocusEvent e) {
-
-        imagenes.get(getIndiceVentana()).getLienzo().setRectangle(new Rectangle(-1, -1, -1, -1));//para que el rectangulo desaparezca
-        imagenes.get(getIndiceVentana()).getLienzo().repaint();                               //al quitar focus de la ventana
     }
 
     @Override

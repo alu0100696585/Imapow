@@ -396,8 +396,8 @@ public class ImageClass {
         Color red = new Color(255, 0, 0); // Color rojo
 
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
-        for(int i=0;i<h;i++){
-            for(int j=0;j<w;j++){
+        for(int i=0;i<w;i++){
+            for(int j=0;j<h;j++){
                 if(pix[getPos(i,j)] < threshold){
                     newimg.setRGB(i, j, pix[getPos(i,j)]);
                 }
