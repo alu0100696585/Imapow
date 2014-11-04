@@ -40,13 +40,16 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     ImageFrame(BufferedImage img, GUI root) {
         //creando ventana
-        this.setResizable(true);
-        this.setSize(400, 400);
+        this.setResizable(false);
+        this.setMinimumSize(null);
 
         this.addFocusListener(root);
 
         //inicializacion de label
-        lValorColor = new JLabel("valor: -1");
+        lValorColor = new JLabel("valor de gris: ");
+        
+        //indicamos tamaño de la ventana segun la imagen
+        this.setSize(img.getWidth() + 6, img.getHeight() + lValorColor.getHeight() + 50);
 
         //inicializacion del indice
         index = -1;
@@ -64,7 +67,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         this.add(lValorColor, BorderLayout.SOUTH);
 
         lienzo.repaint();
-
+        
         //ventana visible
         this.setVisible(true);
 
@@ -155,7 +158,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        lValorColor.setText("valor: " + imagen.colorInPos(e.getX(), e.getY()));
+        lValorColor.setText("valor de gris: " + imagen.colorInPos(e.getX(), e.getY()));
         //lienzo.repaint();
     }
 

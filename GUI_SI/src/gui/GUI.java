@@ -75,6 +75,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         Recortar = new javax.swing.JMenuItem();
         Ecualizar = new javax.swing.JMenuItem();
         Gamma = new javax.swing.JMenuItem();
+        TransNoLin = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         Brillo_Contraste = new javax.swing.JMenuItem();
 
@@ -172,6 +173,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         Edicion.add(Gamma);
+
+        TransNoLin.setText("Transformaciones no lineales");
+        TransNoLin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransNoLinActionPerformed(evt);
+            }
+        });
+        Edicion.add(TransNoLin);
 
         menu_gui.add(Edicion);
 
@@ -371,6 +380,12 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         bc.setVisible(true);
     }//GEN-LAST:event_Brillo_ContrasteActionPerformed
 
+    private void TransNoLinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransNoLinActionPerformed
+        // TODO add your handling code here:
+        
+        FrameTransNoLin ventanaTNL = new FrameTransNoLin();
+    }//GEN-LAST:event_TransNoLinActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -396,6 +411,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem HistogramaValAcu;
     private javax.swing.JMenuItem Recortar;
     private javax.swing.JMenuItem Salir;
+    private javax.swing.JMenuItem TransNoLin;
     private javax.swing.JMenu Ver;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;

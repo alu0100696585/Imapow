@@ -45,14 +45,20 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         labelBrillo = new javax.swing.JLabel();
         labelContraste = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Brillo y Contraste");
         setMinimumSize(new java.awt.Dimension(400, 400));
         getContentPane().setLayout(null);
+
+        sliderBrillo.setMaximum(255);
+        sliderBrillo.setValue(125);
         getContentPane().add(sliderBrillo);
-        sliderBrillo.setBounds(50, 80, 280, 26);
+        sliderBrillo.setBounds(50, 80, 280, 24);
+
+        sliderContraste.setMaximum(255);
+        sliderContraste.setToolTipText("");
+        sliderContraste.setValue(125);
         getContentPane().add(sliderContraste);
-        sliderContraste.setBounds(50, 180, 280, 26);
+        sliderContraste.setBounds(50, 180, 280, 24);
 
         labelBrillo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelBrillo.setText("Brillo");
