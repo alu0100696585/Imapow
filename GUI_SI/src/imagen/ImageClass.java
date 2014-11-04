@@ -42,7 +42,6 @@ public class ImageClass {
     public static final double NTSC_B = 0.114;
     
     
-    
     public ImageClass(BufferedImage img){  //CONSTRUCTOR: Carga la imagen de la ruta seleccionada
    
         picture = img;
@@ -231,7 +230,7 @@ public class ImageClass {
         int L = 255;
         
         for (int i=0;i<255;i++){
-            trans_table[i] = i - L;
+            trans_table[i] = L - i;
         }
         return TRANSFORM(pixels,trans_table);
     }
@@ -429,10 +428,12 @@ public class ImageClass {
     
     public BufferedImage gamma(float g){   // Corrección gamma de una imagen
         int [] trans_table = new int[256];
-
+        double a, b;
         for (int i=0;i<255;i++){
-            float index = i;
-            trans_table[i] = (int) (Math.pow((float)(index/255), g)*255);
+           // trans_table[i] = (int) (Math.pow((float)(index/255), g)*255);
+            a = (double)i/255;
+            b = Math.pow(a,(double)g);
+            trans_table[i] = (int) (b*255);
         }
         return TRANSFORM(pixels,trans_table);
     }
@@ -489,7 +490,8 @@ public class ImageClass {
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
         for(int i=0;i<w;i++){
             for(int j=0;j<h;j++){
-                newimg.setRGB(i, j, pix[getPos(i,j)]);
+                Color bwcolor = new Color(pix[getPos(i,j)],pix[getPos(i,j)],pix[getPos(i,j)]);
+                newimg.setRGB(i, j, bwcolor.getRGB());
             }
         }
         return newimg;
@@ -498,9 +500,10 @@ public class ImageClass {
     
     public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
         int [] newimg = new int[img_size];
+
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
-           /* System.out.println(pix[i]);
+            /*System.out.println(pix[i]);
             System.out.println(" -> "); 
             System.out.println(newimg[i]);*/
         }
