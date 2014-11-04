@@ -324,15 +324,17 @@ public class ImageClass {
         return eg;
     }
     
+    
+    
     public BufferedImage Roi(int ix, int iy, Rectangle rec){    //Devuelve la imagen recortada dentro de rec.
         BufferedImage roi = new BufferedImage(rec.width,rec.height,BufferedImage.TYPE_INT_RGB);
-        
         int dx = ix;
         int dy = iy;
                
         for(int i = 0; i<rec.width; i++){
-            for(int j = 0; j<rec.height; j++){               
-                    roi.setRGB(i, j, picture.getRGB(i + dx, j + dy));              
+            for(int j = 0; j<rec.height; j++){
+                Color colorbw = new Color(pixels[getPos(i+dx, j+dy)], pixels[getPos(i+dx, j+dy)], pixels[getPos(i+dx, j+dy)]);
+                roi.setRGB(i, j, colorbw.getRGB());              
             }
         }      
         picture = roi;
@@ -398,7 +400,8 @@ public class ImageClass {
         for(int i=0;i<w;i++){
             for(int j=0;j<h;j++){
                 if(pix[getPos(i,j)] < threshold){
-                    newimg.setRGB(i, j, pix[getPos(i,j)]);
+                    Color colorbw = new Color(pix[getPos(i,j)], pix[getPos(i,j)],pix[getPos(i,j)]);
+                    newimg.setRGB(i, j, colorbw.getRGB());
                 }
                 else {
                     newimg.setRGB(i, j, red.getRGB());
@@ -430,7 +433,6 @@ public class ImageClass {
         int [] trans_table = new int[256];
         double a, b;
         for (int i=0;i<255;i++){
-           // trans_table[i] = (int) (Math.pow((float)(index/255), g)*255);
             a = (double)i/255;
             b = Math.pow(a,(double)g);
             trans_table[i] = (int) (b*255);
@@ -500,12 +502,16 @@ public class ImageClass {
     
     public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
         int [] newimg = new int[img_size];
+        
+        for (int i=0;i<255;i++){
+            if (table[i]>255)
+                table[i] = 255;
+            if (table[i]<0)
+                table[i] = 0;
+        }
 
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
-            /*System.out.println(pix[i]);
-            System.out.println(" -> "); 
-            System.out.println(newimg[i]);*/
         }
         return toBuffImg(newimg, height, width);
     }
