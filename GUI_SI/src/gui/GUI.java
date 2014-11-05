@@ -174,7 +174,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         });
         Edicion.add(Gamma);
 
-        TransNoLin.setText("Transformaciones no lineales");
+        TransNoLin.setText("Transformaciones lineales");
         TransNoLin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransNoLinActionPerformed(evt);
@@ -353,7 +353,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             String g = JOptionPane.showInputDialog("Ingrese la corrección gamma: ");
 
             
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().gamma(Integer.parseInt(g)),this));
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().gamma(Float.parseFloat(g)),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             
 
