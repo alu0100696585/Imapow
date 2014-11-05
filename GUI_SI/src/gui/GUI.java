@@ -419,13 +419,20 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     @Override
     public void focusGained(FocusEvent e) {
-
+        
+        //conseguir el indice de la ventana focuseada
         ImageFrame aux = (ImageFrame) e.getSource();
-
         indiceVentana = aux.getIndex();
-
         imageActual = aux.getImagen().get_picture();
 
+        //actulizar brillo y contraste 
+        if(bc != null){
+        
+            bc.set_sliderBrillo(imagenes.get(getIndiceVentana()).getImagen().imgBrightness());
+            bc.set_sliderContraste(imagenes.get(getIndiceVentana()).getImagen().imgContrast());
+            
+        }
+        
     }
 
     @Override

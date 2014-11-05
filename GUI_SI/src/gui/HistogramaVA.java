@@ -20,6 +20,7 @@ public class HistogramaVA extends JFrame {
 
     private int[] pixeles;
     private int[] valores;
+    private int media;
 
     /**
      * Creates new form HistogramaValAbsol
@@ -47,7 +48,15 @@ public class HistogramaVA extends JFrame {
         }
         for (int i = 0; i < pixels.length; i++) {
             valores[pixels[i]] += 1;
-        }
+        }        
+        ///////////////////////////////////////////////////////////////////////////
+        int total = 0;
+        
+        for (int i = 0; i < 256; i++) {
+            media += valores[i] * i;
+            total += valores[i];
+        }             
+        media /= total;
     }
     
     public void redimensionar () {//Funcion para que la grafica siempre quede bien dentro de la ventana
@@ -76,6 +85,8 @@ public class HistogramaVA extends JFrame {
             for (int i = 0; i < 255; i++) {
                 g.drawRect(i, 255 - valores[i], 1, valores[i]);
             }
+            g.setColor(Color.GREEN);
+            g.drawRect(media, 0, 1, 255);
         }
     }
 }

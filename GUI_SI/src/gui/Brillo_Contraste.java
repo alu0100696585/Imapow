@@ -23,6 +23,14 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         sliderContraste.addChangeListener(root);
     }
     
+    public void set_sliderBrillo(int x){
+        sliderBrillo.setValue(x);
+    }
+    
+    public void set_sliderContraste(int x){
+        sliderContraste.setValue(x);
+    }
+    
     public int get_sliderBrillo(){
         return sliderBrillo.getValue();
     }

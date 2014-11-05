@@ -20,6 +20,7 @@ public class HistogramaVAC extends JFrame {
 
     private int[] pixeles;
     private int[] valores;
+    private int media;
 
     /**
      * Creates new form HistogramaValAbsol
@@ -48,26 +49,36 @@ public class HistogramaVAC extends JFrame {
             valores[pixels[i]] += 1;
         }
         for (int i = 1; i < valores.length; i++) {
-            valores[i] += valores[i-1];
+            valores[i] += valores[i - 1];
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        int total = 0;
+
+        for (int i = 0; i < 256; i++) {
+            media += valores[i] * i;
+            total += valores[i];
+        }
+        media /= total;
     }
 
-    public void redimensionar () {//Funcion para que la grafica siempre quede bien dentro de la ventana
+    public void redimensionar() {//Funcion para que la grafica siempre quede bien dentro de la ventana
         int max = 0;
         int lim_ventana = 250;//Limite puesto para que no sobrepase la ventana y quede bonito
-        
+
         for (int i = 0; i < valores.length; i++) {
-            if (max < valores[i])
-                max = valores[i];               
+            if (max < valores[i]) {
+                max = valores[i];
+            }
         }
-        
+
         if (max > lim_ventana) {
             for (int i = 0; i < valores.length; i++) {
-                valores[i] = (valores[i] * lim_ventana)/max;
+                valores[i] = (valores[i] * lim_ventana) / max;
             }
         }
     }
-    
+
     public class Grafico extends JPanel {
 
         public void paintComponent(Graphics g) {
@@ -80,6 +91,8 @@ public class HistogramaVAC extends JFrame {
             for (int i = 0; i < 255; i++) {
                 g.drawLine(i, 255, i, 255 - valores[i]);
             }
+            g.setColor(Color.GREEN);
+            g.drawRect(media, 0, 1, 255);           
         }
     }
 }
