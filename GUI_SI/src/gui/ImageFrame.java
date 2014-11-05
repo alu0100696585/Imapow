@@ -99,9 +99,9 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         return imagen.get_picture();
     }
 
-    public void EscalaGrises() {
+    public BufferedImage EscalaGrises() {
 
-        lienzo.setImag(imagen.escalaGrises());
+        return imagen.escalaGrises();
 
     }
 
@@ -111,10 +111,34 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     }
 
-    public void roi(int x, int y, int xf, int yf) {
+    public BufferedImage roi(int x, int y, int xf, int yf) {
         Rectangle rec = new Rectangle(new Point(x, y));
         rec.add(new Point(xf, yf));
-        lienzo.setImag(imagen.Roi(x, y, rec));
+        return imagen.Roi(x, y, rec);
+    }
+    
+    public BufferedImage TransformLin(int [] val){
+        
+        int ntrans = val.length/4;
+        int [] init = new int[ntrans];
+        int [] end = new int[ntrans];
+        int [] A = new int[ntrans];
+        int [] B = new int[ntrans];
+        
+        
+        for(int i = 0; i<ntrans; i++){
+            //inicializando zonas
+            init[i] = val[ 4*i ];
+            end[i] = val[ 4*i + 2];
+            //analizando parametros A y B
+            //pendiente (A)
+            A[i] = (val[ 4*i + 3 ] - val[ 4*i + 1 ]) / (val[ 4*i + 2 ] - val[ 4*i ]);
+            //eje coordenadas (B)
+            B[i] = val[ 4*i + 1 ] - (A[i] * val[ 4*i ]);  
+        }
+        
+        
+        return imagen.linealTransZones(ntrans, init, end, A, B);    
     }
 
     @Override

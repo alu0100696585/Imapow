@@ -8,6 +8,8 @@ package gui;
 import imagen.ImageClass;
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
@@ -29,12 +31,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author ImapowSL
  *
  */
-public class GUI extends javax.swing.JFrame implements FocusListener, ChangeListener {
+public class GUI extends javax.swing.JFrame implements FocusListener, ChangeListener, ActionListener {
 
     private BufferedImage imageActual;
     private ArrayList<ImageFrame> imagenes;
     private int indiceVentana;
     private Brillo_Contraste bc;
+    private FrameTransLin tl;
 
     public int getIndiceVentana() {
         return indiceVentana;
@@ -75,9 +78,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         Recortar = new javax.swing.JMenuItem();
         Ecualizar = new javax.swing.JMenuItem();
         Gamma = new javax.swing.JMenuItem();
-        TransNoLin = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         Brillo_Contraste = new javax.swing.JMenuItem();
+        TransLin = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -174,14 +177,6 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         });
         Edicion.add(Gamma);
 
-        TransNoLin.setText("Transformaciones lineales");
-        TransNoLin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TransNoLinActionPerformed(evt);
-            }
-        });
-        Edicion.add(TransNoLin);
-
         menu_gui.add(Edicion);
 
         jMenu1.setText("Herramientas");
@@ -193,6 +188,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         jMenu1.add(Brillo_Contraste);
+
+        TransLin.setText("Transformaciones lineales");
+        TransLin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransLinActionPerformed(evt);
+            }
+        });
+        jMenu1.add(TransLin);
 
         menu_gui.add(jMenu1);
 
@@ -262,10 +265,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imageActual, this));               //crear nueva ventana
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).EscalaGrises(),this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            imagenes.get(imagenes.size() - 1).EscalaGrises();          //aplicar escala grises
-
         }
     }//GEN-LAST:event_EscalaGrisesActionPerformed
 
@@ -277,10 +278,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
+            
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy),this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            /*
             imagenes.add(new ImageFrame(imageActual, this));      //crear nueva ventana
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             //cargando el recuadro de la imagen anterior en la nueva imagen 
-            imagenes.get(imagenes.size() - 1).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy); //aplicar recorte
+            imagenes.get(imagenes.size() - 1); //aplicar recorte*/
         }
     }//GEN-LAST:event_RecortarActionPerformed
 
@@ -380,12 +385,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         bc.setVisible(true);
     }//GEN-LAST:event_Brillo_ContrasteActionPerformed
 
-    private void TransNoLinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransNoLinActionPerformed
+    private void TransLinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransLinActionPerformed
         // TODO add your handling code here:
         
-        FrameTransNoLin ventanaTNL = new FrameTransNoLin();
-    }//GEN-LAST:event_TransNoLinActionPerformed
+        tl = new FrameTransLin(this);
+       
+    }//GEN-LAST:event_TransLinActionPerformed
 
+        
     /**
      * @param args the command line arguments
      */
@@ -411,7 +418,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem HistogramaValAcu;
     private javax.swing.JMenuItem Recortar;
     private javax.swing.JMenuItem Salir;
-    private javax.swing.JMenuItem TransNoLin;
+    private javax.swing.JMenuItem TransLin;
     private javax.swing.JMenu Ver;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
@@ -445,5 +452,13 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         int c = bc.get_sliderContraste();
         
         imagenes.get(getIndiceVentana()).ByC(b,c);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if( tl.getAceptar() == ae.getSource()){
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).TransformLin(tl.get_valores()),this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
     }
 }
