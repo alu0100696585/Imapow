@@ -148,7 +148,7 @@ public class ImageClass {
     
     
     public int[] getColorValues(){ //Devuelve los valores del histograma de color
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             colorValues[i]=0;
         }
         for (int i=0;i<img_size;i++){
@@ -161,7 +161,7 @@ public class ImageClass {
     public int[] getAcumulativeValues(){// Devuelve los valores del histograma acumulativo.
         int [] acumulativeValues = this.getColorValues();
 
-        for (int i=1;i<255;i++){
+        for (int i=1;i<256;i++){
             acumulativeValues[i] += acumulativeValues[i-1];
         }
         return acumulativeValues;
@@ -227,9 +227,9 @@ public class ImageClass {
     
     public BufferedImage imgNegative(){  // Devuelve el negativo (complemento) de la imagen
         int[] trans_table = new int[256];
-        int L = 255;
+        int L = 256;
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             trans_table[i] = L - i;
         }
         return TRANSFORM(pixels,trans_table);
@@ -239,9 +239,9 @@ public class ImageClass {
     public BufferedImage imgBinary(int threshold){   // Devuelve la imagen binarizada a partir de un umbral
         int[] trans_table = new int[256];
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             if (i >= threshold)
-                trans_table[i] = 255;
+                trans_table[i] = 256;
             else trans_table[i] = 0;
         }
         return TRANSFORM(pixels,trans_table);
@@ -250,7 +250,7 @@ public class ImageClass {
     
     public BufferedImage linealTrans(int A, int B){  //Aplica la transformación lineal de forma Y = AX+B
        int[] trans_table = new int[256];
-         for (int i=0;i<255;i++){
+         for (int i=0;i<256;i++){
             trans_table[i] = i * A + B;
         }
         return TRANSFORM(pixels,trans_table);
@@ -265,7 +265,7 @@ public class ImageClass {
         int newCo = contrast / currentC;
         int newBr = bright - (newCo*currentB);
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             trans_table[i] = i * newCo + newBr;
         }
         return TRANSFORM(pixels,trans_table);
@@ -349,7 +349,7 @@ public class ImageClass {
     // y el mayor en end_zones.
         int[] trans_table = new int[256];
             
-        for(int i=0;i<255;i++){
+        for(int i=0;i<256;i++){
             for(int j=0;j>n_trans;j++){
                 if(i > init_zones[j] && i < end_zones[j]){
                     trans_table[i] = i * A[j] + B[j];
@@ -383,7 +383,7 @@ public class ImageClass {
         int[] trans_table = new int[256];
         int [] acHisto = this.getAcumulativeValues();
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             trans_table[i] = Math.max(0, Math.round((256/img_size)*acHisto[i])-1);
             //System.out.println(trans_table[i]);
             trans_table[i] = (int) Math.max(0, Math.round(((float)256/(float)img_size)*acHisto[i])-1);
@@ -432,7 +432,7 @@ public class ImageClass {
     public BufferedImage gamma(float g){   // Corrección gamma de una imagen
         int [] trans_table = new int[256];
         double a, b;
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             a = (double)i/255;
             b = Math.pow(a,(double)g);
             trans_table[i] = (int) (b*255);
@@ -448,19 +448,19 @@ public class ImageClass {
         float []imh1 = new float[256];
         float []imh2 = new float[256];
         
-        for(int i=0;i<255;i++){
+        for(int i=0;i<256;i++){
             imh1[i]=(float)imhisto[i];
             imh2[i]=(float)imhisto2[i];
         }
         int[] trans_table = new int[256];
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             imh1[i]/=img_size;
             imh2[i]/=im2.img_size;
         }
         
-        for (int i=0;i<255;i++){
-            for (int j=0;j<255;j++){
+        for (int i=0;i<256;i++){
+            for (int j=0;j<256;j++){
                 if (imh1[i] == imh2[j]){
                     trans_table[i] = j;
                     break;
@@ -503,7 +503,7 @@ public class ImageClass {
     public BufferedImage TRANSFORM(int[] pix, int[] table){ //Utiliza la matriz de transformacion para generar la nueva imagen
         int [] newimg = new int[img_size];
         
-        for (int i=0;i<255;i++){
+        for (int i=0;i<256;i++){
             if (table[i]>255)
                 table[i] = 255;
             if (table[i]<0)
