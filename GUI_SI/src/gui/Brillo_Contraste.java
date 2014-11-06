@@ -6,6 +6,8 @@
 
 package gui;
 
+import javax.swing.JButton;
+
 
 /**
  *
@@ -21,6 +23,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         initComponents();
         sliderBrillo.addChangeListener(root);
         sliderContraste.addChangeListener(root);
+        Aceptar.addActionListener(root);
     }
     
     public void set_sliderBrillo(int x){
@@ -38,6 +41,10 @@ public class Brillo_Contraste extends javax.swing.JFrame {
     public int get_sliderContraste(){
         return sliderContraste.getValue();
     }
+    
+    public JButton getAceptar(){
+        return Aceptar;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +59,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         sliderContraste = new javax.swing.JSlider();
         labelBrillo = new javax.swing.JLabel();
         labelContraste = new javax.swing.JLabel();
+        Aceptar = new javax.swing.JButton();
 
         setTitle("Brillo y Contraste");
         setMinimumSize(new java.awt.Dimension(400, 400));
@@ -60,13 +68,13 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         sliderBrillo.setMaximum(255);
         sliderBrillo.setValue(125);
         getContentPane().add(sliderBrillo);
-        sliderBrillo.setBounds(50, 80, 280, 24);
+        sliderBrillo.setBounds(50, 80, 280, 26);
 
-        sliderContraste.setMaximum(255);
+        sliderContraste.setMaximum(127);
         sliderContraste.setToolTipText("");
-        sliderContraste.setValue(125);
+        sliderContraste.setValue(64);
         getContentPane().add(sliderContraste);
-        sliderContraste.setBounds(50, 180, 280, 24);
+        sliderContraste.setBounds(50, 180, 280, 26);
 
         labelBrillo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelBrillo.setText("Brillo");
@@ -78,8 +86,21 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         getContentPane().add(labelContraste);
         labelContraste.setBounds(160, 140, 70, 19);
 
+        Aceptar.setText("Aceptar");
+        Aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AceptarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Aceptar);
+        Aceptar.setBounds(120, 230, 140, 23);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AceptarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,6 +142,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Aceptar;
     private javax.swing.JLabel labelBrillo;
     private javax.swing.JLabel labelContraste;
     private javax.swing.JSlider sliderBrillo;

@@ -166,6 +166,47 @@ public class ImageClass {
         }
         return acumulativeValues;
     }
+
+    public void setPicture(BufferedImage img) {
+        
+        try{
+            
+            //Calcular alto, ancho y tamaño
+            height = img.getHeight();
+            width = img.getWidth();
+            img_size = height*width;
+            picture = img;
+            
+            
+            pixels = new int[img_size];
+            
+            
+            //Rellenar array de la imagen    
+            for(int i = 0; i<width; i++){
+                for(int j = 0; j<height; j++){
+  
+                int srcPixel = img.getRGB(i, j);
+                
+                Color c = new Color(srcPixel);
+                
+                image.add(c);
+                
+                int r = (0xff & (srcPixel >> 16));  //Desplaza el entero srcPixel 16 bits a la derecha
+                int g = (0xff & (srcPixel >> 8));
+                int b = (0xff & (srcPixel));
+                
+                //int promedio = (int)((r+g+b)/3);
+                    
+                pixels[i*height+j] =(int)(r*NTSC_R + g*NTSC_G + b*NTSC_B);                   
+                }
+            }
+            
+            } 
+        catch(Exception e){ 
+            e.printStackTrace();
+            System.out.println("\nBuilding image... Some problem has occurred. Please try again"); 
+        }
+    }
     
    
     
@@ -212,15 +253,16 @@ public class ImageClass {
     
     public int imgContrast(){  // Devuelve el contraste (Desv. Tipica)
         int average = this.imgBrightness();
-        double c = 0;
-        Double contrast = new Double(c);
+        double contrast = 0;
+        //Double contrast = new Double(c);
         
         for(int i=0;i<img_size;i++){
             contrast = contrast + (pixels[i] - average) * (pixels[i] - average);
         }
+        
         contrast = contrast / img_size;
         contrast = Math.sqrt(contrast);
-        return contrast.intValue();
+        return (int) contrast;
     }
     
     
@@ -262,12 +304,15 @@ public class ImageClass {
         int currentC = this.imgContrast();
         int[] trans_table = new int[256];
            
-        int newCo = contrast / currentC;
-        int newBr = bright - (newCo*currentB);
+        double newCo = (double)contrast / (double)currentC;
+        double newBr = bright - (newCo*currentB);
         
         for (int i=0;i<256;i++){
-            trans_table[i] = i * newCo + newBr;
+            trans_table[i] = (int)(i * newCo + newBr);
         }
+        
+        //System.out.println(currentB + " " + currentC + " / " + bright + " " + contrast);
+        
         return TRANSFORM(pixels,trans_table);
     }
     
@@ -337,11 +382,8 @@ public class ImageClass {
                 roi.setRGB(i, j, colorbw.getRGB());              
             }
         }      
-        picture = roi;
         return roi;
     }
-    
-    
     
     public BufferedImage linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
     // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
@@ -350,7 +392,7 @@ public class ImageClass {
         int[] trans_table = new int[256];
             
         for(int i=0;i<256;i++){
-            for(int j=0;j>n_trans;j++){
+            for(int j=0;j<n_trans;j++){
                 if(i > init_zones[j] && i < end_zones[j]){
                     trans_table[i] = i * A[j] + B[j];
                 }

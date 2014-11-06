@@ -424,6 +424,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
 
+    private boolean inicializando = false;
     @Override
     public void focusGained(FocusEvent e) {
         
@@ -431,12 +432,16 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         ImageFrame aux = (ImageFrame) e.getSource();
         indiceVentana = aux.getIndex();
         imageActual = aux.getImagen().get_picture();
-
+        
         //actulizar brillo y contraste 
         if(bc != null){
         
+            inicializando = true;
+            
             bc.set_sliderBrillo(imagenes.get(getIndiceVentana()).getImagen().imgBrightness());
             bc.set_sliderContraste(imagenes.get(getIndiceVentana()).getImagen().imgContrast());
+            
+            inicializando = false;
             
         }
         
@@ -448,17 +453,34 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     @Override
     public void stateChanged(ChangeEvent e) {
+        
+        if (inicializando)
+            return;
+        
         int b = bc.get_sliderBrillo();
         int c = bc.get_sliderContraste();
         
-        imagenes.get(getIndiceVentana()).ByC(b,c);
+        imagenes.get(getIndiceVentana()).ByC(b,c,false); // 0 para n omodificar la imagen del frame
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if( tl.getAceptar() == ae.getSource()){
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).TransformLin(tl.get_valores()),this));
-            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        if(tl != null){
+            if( tl.getAceptar() == ae.getSource() ){
+                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).TransformLin(tl.get_valores()),this));
+                imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            }
         }
+        
+        if(bc != null){
+            if( bc.getAceptar() == ae.getSource() ){
+            
+                int b = bc.get_sliderBrillo();
+                int c = bc.get_sliderContraste();
+                imagenes.get(getIndiceVentana()).ByC(b,c,true); // 1 porque se aplican los cambios definitivos
+            
+            }
+        }
+        
     }
 }

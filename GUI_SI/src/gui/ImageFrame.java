@@ -125,7 +125,6 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         int [] A = new int[ntrans];
         int [] B = new int[ntrans];
         
-        
         for(int i = 0; i<ntrans; i++){
             //inicializando zonas
             init[i] = val[ 4*i ];
@@ -134,7 +133,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
             //pendiente (A)
             A[i] = (val[ 4*i + 3 ] - val[ 4*i + 1 ]) / (val[ 4*i + 2 ] - val[ 4*i ]);
             //eje coordenadas (B)
-            B[i] = val[ 4*i + 1 ] - (A[i] * val[ 4*i ]);  
+            B[i] = val[ 4*i + 3 ] - (A[i] * val[ 4*i + 2 ]);  
         }
         
         
@@ -176,8 +175,16 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     }
     
-    public void ByC(int b,int c){
-        lienzo.setImag(imagen.imgSetByC(b,c));
+    public void ByC(int b,int c, boolean guardar){
+        
+        if(guardar){
+            ImageClass nwImg = new ImageClass(imagen.imgSetByC(b, c));
+            imagen = nwImg;        
+            lienzo.setImag(nwImg.get_picture());
+        }
+        else{
+            lienzo.setImag(imagen.imgSetByC(b, c));
+        }
     }
 
     @Override
