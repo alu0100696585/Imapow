@@ -6,22 +6,19 @@
 package gui;
 
 import imagen.ImageClass;
-import java.awt.Component;
-import java.awt.Rectangle;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,6 +49,10 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
      */
     public GUI() {
         imagenes = new ArrayList<ImageFrame>();
+
+        Image icon = new ImageIcon(getClass().getResource("/gui/imapow.png")).getImage();
+        setIconImage(icon);
+
         initComponents();
     }
 
@@ -67,6 +68,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         menu_gui = new javax.swing.JMenuBar();
         Archivo = new javax.swing.JMenu();
         Cargar = new javax.swing.JMenuItem();
+        Guardar = new javax.swing.JMenuItem();
         Salir = new javax.swing.JMenuItem();
         Ver = new javax.swing.JMenu();
         EscalaGrises = new javax.swing.JMenuItem();
@@ -85,6 +87,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
         setMinimumSize(new java.awt.Dimension(340, 25));
+        setResizable(false);
         getContentPane().setLayout(null);
 
         Archivo.setText("Archivo");
@@ -96,6 +99,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         Archivo.add(Cargar);
+
+        Guardar.setText("Guardar...");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
+        Archivo.add(Guardar);
 
         Salir.setText("Salir");
         Salir.addActionListener(new java.awt.event.ActionListener() {
@@ -265,7 +276,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).EscalaGrises(),this));
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).EscalaGrises(), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_EscalaGrisesActionPerformed
@@ -278,14 +289,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy),this));
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).roi(imagenes.get(getIndiceVentana()).ix, imagenes.get(getIndiceVentana()).iy, imagenes.get(getIndiceVentana()).fx, imagenes.get(getIndiceVentana()).fy), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             /*
-            imagenes.add(new ImageFrame(imageActual, this));      //crear nueva ventana
-            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            //cargando el recuadro de la imagen anterior en la nueva imagen 
-            imagenes.get(imagenes.size() - 1); //aplicar recorte*/
+             imagenes.add(new ImageFrame(imageActual, this));      //crear nueva ventana
+             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+             //cargando el recuadro de la imagen anterior en la nueva imagen 
+             imagenes.get(imagenes.size() - 1); //aplicar recorte*/
         }
     }//GEN-LAST:event_RecortarActionPerformed
 
@@ -325,7 +336,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).Ecualizar(),this));
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).Ecualizar(), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_EcualizarActionPerformed
@@ -340,8 +351,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         else {
 
             String th = JOptionPane.showInputDialog("Ingrese el umbral de comparacion: ");
-            
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().compare(new ImageClass(abrirImagen()), Integer.parseInt(th)),this));
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().compare(new ImageClass(abrirImagen()), Integer.parseInt(th)), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_DiferenciaActionPerformed
@@ -357,10 +368,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
             String g = JOptionPane.showInputDialog("Ingrese la corrección gamma: ");
 
-            
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().gamma(Float.parseFloat(g)),this));
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().gamma(Float.parseFloat(g)), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
-            
 
         }
     }//GEN-LAST:event_GammaActionPerformed
@@ -373,8 +382,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().HistogramSpecification(new ImageClass(abrirImagen())),this));
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().HistogramSpecification(new ImageClass(abrirImagen())), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_HistEspecificActionPerformed
@@ -387,17 +396,50 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     private void TransLinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransLinActionPerformed
         // TODO add your handling code here:
-        
+
         tl = new FrameTransLin(this);
-       
+
     }//GEN-LAST:event_TransLinActionPerformed
 
-        
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser();
+
+        //Le damos un título
+        fc.setDialogTitle("Seleccione la ubicación");
+
+        //Filtramos los tipos de archivos
+        FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("BMP", "bmp");
+        fc.setFileFilter(filtroImagen);
+
+        int r = fc.showSaveDialog(null);
+        if (r == JFileChooser.APPROVE_OPTION) {
+            File archivo = fc.getSelectedFile();
+            try {
+                ImageIO.write(imageActual, "bmp", archivo);
+            }
+            catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_GuardarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+
+        try {
+            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
         GUI programa = new GUI();
         programa.setVisible(true);
@@ -413,6 +455,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenu Edicion;
     private javax.swing.JMenuItem EscalaGrises;
     private javax.swing.JMenuItem Gamma;
+    private javax.swing.JMenuItem Guardar;
     private javax.swing.JMenuItem HistEspecific;
     private javax.swing.JMenuItem HistogramaValAbsol;
     private javax.swing.JMenuItem HistogramaValAcu;
@@ -425,26 +468,27 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     // End of variables declaration//GEN-END:variables
 
     private boolean inicializando = false;
+
     @Override
     public void focusGained(FocusEvent e) {
-        
+
         //conseguir el indice de la ventana focuseada
         ImageFrame aux = (ImageFrame) e.getSource();
         indiceVentana = aux.getIndex();
         imageActual = aux.getImagen().get_picture();
-        
+
         //actulizar brillo y contraste 
-        if(bc != null){
-        
+        if (bc != null) {
+
             inicializando = true;
-            
+
             bc.set_sliderBrillo(imagenes.get(getIndiceVentana()).getImagen().imgBrightness());
             bc.set_sliderContraste(imagenes.get(getIndiceVentana()).getImagen().imgContrast());
-            
+
             inicializando = false;
-            
+
         }
-        
+
     }
 
     @Override
@@ -453,34 +497,40 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        
-        if (inicializando)
+
+        if (inicializando) {
             return;
-        
+        }
+
         int b = bc.get_sliderBrillo();
         int c = bc.get_sliderContraste();
-        
-        imagenes.get(getIndiceVentana()).ByC(b,c,false); // 0 para n omodificar la imagen del frame
+
+        imagenes.get(getIndiceVentana()).ByC(b, c, false); // 0 para n omodificar la imagen del frame
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(tl != null){
-            if( tl.getAceptar() == ae.getSource() ){
-                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).TransformLin(tl.get_valores()),this));
+        if (tl != null) {
+            if (tl.getAceptar() == ae.getSource()) {
+                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).TransformLin(tl.get_valores()), this));
                 imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
             }
         }
-        
-        if(bc != null){
-            if( bc.getAceptar() == ae.getSource() ){
-            
+
+        if (bc != null) {
+            if (bc.getAceptar() == ae.getSource()) {
+
                 int b = bc.get_sliderBrillo();
                 int c = bc.get_sliderContraste();
-                imagenes.get(getIndiceVentana()).ByC(b,c,true); // 1 porque se aplican los cambios definitivos
-            
+                imagenes.get(getIndiceVentana()).ByC(b, c, true); // 1 porque se aplican los cambios definitivos
+
+            }
+            if (bc.getRestaurar() == ae.getSource()) {
+
+                imagenes.get(getIndiceVentana()).Restaurar_ByC();
+
             }
         }
-        
+
     }
 }

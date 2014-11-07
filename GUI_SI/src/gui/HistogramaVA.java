@@ -8,6 +8,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +34,8 @@ public class HistogramaVA extends JFrame {
         this.setResizable(false);
         this.setVisible(true);
         this.setTitle("Histograma");
+        Image icon = new ImageIcon(getClass().getResource("/gui/imapow.png")).getImage();
+        setIconImage(icon);
         pixeles = pixels;
         valores = new int[256];
         rellenar_datos(pixeles);

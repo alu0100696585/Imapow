@@ -9,6 +9,8 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import imagen.ImageClass;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
@@ -33,6 +35,8 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     private int index;//variable indice de la ventana
     private int vColor;//valor del color en el punto x y
     private JLabel lValorColor;//label para valor del color en el punto x y
+    private JLabel lPos;//label para posicion del puntero en la imagen
+    private JPanel etiquetas;
     public int ix;
     public int iy;
     public int fx;
@@ -42,11 +46,16 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         //creando ventana
         this.setResizable(false);
         this.setMinimumSize(null);
+        Image icon = new ImageIcon(getClass().getResource("/gui/imapow.png")).getImage();
+        setIconImage(icon);
 
         this.addFocusListener(root);
 
-        //inicializacion de label
+        //inicializacion de labels
         lValorColor = new JLabel("valor de gris: ");
+        lPos = new JLabel("x: y: ");
+        etiquetas = new JPanel();
+        etiquetas.setLayout(new GridLayout(1,2));
         
         //indicamos tamaño de la ventana segun la imagen
         this.setSize(img.getWidth() + 6, img.getHeight() + lValorColor.getHeight() + 50);
@@ -63,8 +72,10 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         //añadiendo el lienzo
         this.add(lienzo, BorderLayout.CENTER);
 
-        //añadiendo el label
-        this.add(lValorColor, BorderLayout.SOUTH);
+        //añadiendo labels
+        etiquetas.add(lValorColor);
+        etiquetas.add(lPos);
+        this.add(etiquetas, BorderLayout.SOUTH);
 
         lienzo.repaint();
         
@@ -186,10 +197,16 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
             lienzo.setImag(imagen.imgSetByC(b, c));
         }
     }
+    
+    public void Restaurar_ByC() {
+        lienzo.setImag(imagen.get_picture());
+        lienzo.repaint();
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         lValorColor.setText("valor de gris: " + imagen.colorInPos(e.getX(), e.getY()));
+        lPos.setText("x: " + e.getX() + " y: " + e.getY());
         //lienzo.repaint();
     }
 

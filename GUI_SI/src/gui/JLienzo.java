@@ -8,10 +8,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
