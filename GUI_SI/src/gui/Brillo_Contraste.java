@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package gui;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 
 /**
  *
@@ -15,35 +15,40 @@ import javax.swing.JButton;
  */
 public class Brillo_Contraste extends javax.swing.JFrame {
 
-    
     /**
      * Creates new form Brillo_Contraste
      */
     public Brillo_Contraste(GUI root) {
+        Image icon = new ImageIcon(getClass().getResource("/gui/imapow.png")).getImage();
+        setIconImage(icon);
         initComponents();
         sliderBrillo.addChangeListener(root);
         sliderContraste.addChangeListener(root);
         Aceptar.addActionListener(root);
     }
-    
-    public void set_sliderBrillo(int x){
+
+    public void set_sliderBrillo(int x) {
         sliderBrillo.setValue(x);
     }
-    
-    public void set_sliderContraste(int x){
+
+    public void set_sliderContraste(int x) {
         sliderContraste.setValue(x);
     }
-    
-    public int get_sliderBrillo(){
+
+    public int get_sliderBrillo() {
         return sliderBrillo.getValue();
     }
-    
-    public int get_sliderContraste(){
+
+    public int get_sliderContraste() {
         return sliderContraste.getValue();
     }
-    
-    public JButton getAceptar(){
+
+    public JButton getAceptar() {
         return Aceptar;
+    }
+
+    public JButton getRestaurar() {
+        return Restaurar;
     }
 
     /**
@@ -60,21 +65,22 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         labelBrillo = new javax.swing.JLabel();
         labelContraste = new javax.swing.JLabel();
         Aceptar = new javax.swing.JButton();
+        Restaurar = new javax.swing.JButton();
 
         setTitle("Brillo y Contraste");
-        setMinimumSize(new java.awt.Dimension(400, 400));
+        setMinimumSize(new java.awt.Dimension(400, 350));
         getContentPane().setLayout(null);
 
         sliderBrillo.setMaximum(255);
         sliderBrillo.setValue(125);
         getContentPane().add(sliderBrillo);
-        sliderBrillo.setBounds(50, 80, 280, 26);
+        sliderBrillo.setBounds(50, 80, 280, 16);
 
-        sliderContraste.setMaximum(127);
+        sliderContraste.setMaximum(255);
         sliderContraste.setToolTipText("");
-        sliderContraste.setValue(64);
+        sliderContraste.setValue(125);
         getContentPane().add(sliderContraste);
-        sliderContraste.setBounds(50, 180, 280, 26);
+        sliderContraste.setBounds(50, 180, 280, 16);
 
         labelBrillo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelBrillo.setText("Brillo");
@@ -86,14 +92,18 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         getContentPane().add(labelContraste);
         labelContraste.setBounds(160, 140, 70, 19);
 
-        Aceptar.setText("Aceptar");
+        Aceptar.setText("Hacer permamente");
         Aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AceptarActionPerformed(evt);
             }
         });
         getContentPane().add(Aceptar);
-        Aceptar.setBounds(120, 230, 140, 23);
+        Aceptar.setBounds(120, 230, 140, 25);
+
+        Restaurar.setText("Restaurar");
+        getContentPane().add(Restaurar);
+        Restaurar.setBounds(120, 260, 140, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -134,15 +144,16 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-      /*  java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Brillo_Contraste().setVisible(true);
-            }
-        });*/
+        /*  java.awt.EventQueue.invokeLater(new Runnable() {
+         public void run() {
+         new Brillo_Contraste().setVisible(true);
+         }
+         });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Aceptar;
+    private javax.swing.JButton Restaurar;
     private javax.swing.JLabel labelBrillo;
     private javax.swing.JLabel labelContraste;
     private javax.swing.JSlider sliderBrillo;
