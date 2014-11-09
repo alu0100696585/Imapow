@@ -197,11 +197,6 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
             lienzo.setImag(imagen.imgSetByC(b, c));
         }
     }
-    
-    public void Restaurar_ByC() {
-        lienzo.setImag(imagen.get_picture());
-        lienzo.repaint();
-    }
 
     @Override
     public void mouseMoved(MouseEvent e) {

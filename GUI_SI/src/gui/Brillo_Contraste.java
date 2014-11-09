@@ -102,6 +102,11 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         Aceptar.setBounds(120, 230, 140, 25);
 
         Restaurar.setText("Restaurar");
+        Restaurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RestaurarActionPerformed(evt);
+            }
+        });
         getContentPane().add(Restaurar);
         Restaurar.setBounds(120, 260, 140, 25);
 
@@ -111,6 +116,10 @@ public class Brillo_Contraste extends javax.swing.JFrame {
     private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_AceptarActionPerformed
+
+    private void RestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestaurarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RestaurarActionPerformed
 
     /**
      * @param args the command line arguments

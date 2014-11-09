@@ -527,7 +527,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
             if (bc.getRestaurar() == ae.getSource()) {
 
-                imagenes.get(getIndiceVentana()).Restaurar_ByC();
+                imagenes.get(getIndiceVentana()).ByC(imagenes.get(getIndiceVentana()).getImagen().imgBrightness(), imagenes.get(getIndiceVentana()).getImagen().imgContrast(), false);
 
             }
         }
