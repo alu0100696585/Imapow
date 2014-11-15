@@ -36,6 +36,10 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     private int vColor;//valor del color en el punto x y
     private JLabel lValorColor;//label para valor del color en el punto x y
     private JLabel lPos;//label para posicion del puntero en la imagen
+    private JLabel entrop;
+    private JLabel tam_img;
+    private JLabel alto;
+    private JLabel ancho;
     private JPanel etiquetas;
     public int ix;
     public int iy;
@@ -55,7 +59,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         lValorColor = new JLabel("valor de gris: ");
         lPos = new JLabel("x: y: ");
         etiquetas = new JPanel();
-        etiquetas.setLayout(new GridLayout(1,2));
+        etiquetas.setLayout(new GridLayout(3,2));
         
         //indicamos tamaño de la ventana segun la imagen
         this.setSize(img.getWidth() + 6, img.getHeight() + lValorColor.getHeight() + 50);
@@ -65,6 +69,12 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
         //Almacenando la informacion de la imagen
         imagen = new ImageClass(img);
+        
+        //label para calcular datos sobre la imagen
+        entrop = new JLabel("Entropía: " + imagen.getEnthropy());
+        alto = new JLabel("Largo: " + imagen.getHeight());
+        ancho = new JLabel("Ancho: " + imagen.getWidth());
+        tam_img = new JLabel("Tamaño imagen: " +imagen.getSize());
 
         //cargando imagen en el lienzo    
         lienzo = new JLienzo(img, this);
@@ -75,6 +85,10 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         //añadiendo labels
         etiquetas.add(lValorColor);
         etiquetas.add(lPos);
+        etiquetas.add(entrop);
+        etiquetas.add(tam_img);
+        etiquetas.add(alto);
+        etiquetas.add(ancho);
         this.add(etiquetas, BorderLayout.SOUTH);
 
         lienzo.repaint();
