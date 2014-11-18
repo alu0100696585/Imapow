@@ -423,6 +423,7 @@ public class ImageClass {
         return TRANSFORM(pixels,trans_table);
     }
     
+    /*
     public int imgMaxColor(){ // Devuelve el valor máximo de color de la imagen
         int max = 0;
          for (int i=0;i<img_size;i++){
@@ -442,6 +443,7 @@ public class ImageClass {
          }
         return min;
     }
+    */
     
     public BufferedImage equalization(){  // Devuelve la imagen con el histograma equalizado
         int[] trans_table = new int[256];

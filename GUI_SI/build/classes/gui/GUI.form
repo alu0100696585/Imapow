@@ -66,10 +66,18 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="Diferencia">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Diferencia con otra im&#xe1;gen"/>
+                <Property name="text" type="java.lang.String" value="Cambios en una imagen "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DiferenciaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="imagenDif">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Imagen diferencia"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="imagenDifActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="HistEspecific">

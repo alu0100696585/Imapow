@@ -75,6 +75,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         HistogramaValAbsol = new javax.swing.JMenuItem();
         HistogramaValAcu = new javax.swing.JMenuItem();
         Diferencia = new javax.swing.JMenuItem();
+        imagenDif = new javax.swing.JMenuItem();
         HistEspecific = new javax.swing.JMenuItem();
         Edicion = new javax.swing.JMenu();
         Recortar = new javax.swing.JMenuItem();
@@ -144,13 +145,21 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         });
         Ver.add(HistogramaValAcu);
 
-        Diferencia.setText("Diferencia con otra imágen");
+        Diferencia.setText("Cambios en una imagen ");
         Diferencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DiferenciaActionPerformed(evt);
             }
         });
         Ver.add(Diferencia);
+
+        imagenDif.setText("Imagen diferencia");
+        imagenDif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imagenDifActionPerformed(evt);
+            }
+        });
+        Ver.add(imagenDif);
 
         HistEspecific.setText("Especificacioón histograma");
         HistEspecific.addActionListener(new java.awt.event.ActionListener() {
@@ -426,6 +435,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
     }//GEN-LAST:event_GuardarActionPerformed
 
+    private void imagenDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imagenDifActionPerformed
+        // TODO add your handling code here:
+        
+        imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().compare(new ImageClass(abrirImagen()), 255), this));
+        imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        
+    }//GEN-LAST:event_imagenDifActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -463,6 +480,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem Salir;
     private javax.swing.JMenuItem TransLin;
     private javax.swing.JMenu Ver;
+    private javax.swing.JMenuItem imagenDif;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
     // End of variables declaration//GEN-END:variables
