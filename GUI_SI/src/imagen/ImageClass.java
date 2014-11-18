@@ -23,8 +23,6 @@ import javax.swing.ImageIcon;
  * 
  */
 
-
-
 public class ImageClass {
     
     //ATRIBUTOS
@@ -40,7 +38,8 @@ public class ImageClass {
     public static final double NTSC_R = 0.299;
     public static final double NTSC_G = 0.587;
     public static final double NTSC_B = 0.114;
-    
+   
+    public static final int MAX = 999999;
     
     public ImageClass(BufferedImage img){  //CONSTRUCTOR: Carga la imagen de la ruta seleccionada
    
@@ -144,6 +143,29 @@ public class ImageClass {
 */
     public int[] getPixels() {  //Devuelve el array de valores de color de la imagen
         return pixels;
+    }
+    
+    public int getGris(boolean modo){ // Devuelve el valor de gris maximo si es verdadero y el minimo si es false
+
+        int comp;
+        
+        comp = modo ? 0 : MAX;
+        
+        for(int i=0; i<pixels.length; i++){
+            if(modo){
+                if(comp < pixels[i]){
+                    comp = pixels[i];
+                }
+            }
+            else{
+                if(comp > pixels[i]){
+                    comp = pixels[i];
+                }
+            }
+        }
+        
+        return comp;
+        
     }
     
     

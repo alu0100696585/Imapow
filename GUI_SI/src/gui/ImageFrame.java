@@ -77,8 +77,8 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         alto = new JLabel("Largo: " + imagen.getHeight());
         ancho = new JLabel("Ancho: " + imagen.getWidth());
         tam_img = new JLabel("Tamaño imagen: " +imagen.getSize());
-        //maxGris = new JLabel("Gris max: " + imagen.getGris(true)):
-        //minGris = new JLabel("Gris min: " + imagen.getGris(false)):
+        maxGris = new JLabel("Gris max: " + imagen.getGris(true));
+        minGris = new JLabel("Gris min: " + imagen.getGris(false));
         
         //cargando imagen en el lienzo    
         lienzo = new JLienzo(img, this);
@@ -93,6 +93,8 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         etiquetas.add(tam_img);
         etiquetas.add(alto);
         etiquetas.add(ancho);
+        etiquetas.add(maxGris);
+        etiquetas.add(minGris);
         this.add(etiquetas, BorderLayout.SOUTH);
 
         lienzo.repaint();
