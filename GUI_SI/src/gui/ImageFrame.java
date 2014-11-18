@@ -40,6 +40,8 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     private JLabel tam_img;
     private JLabel alto;
     private JLabel ancho;
+    private JLabel maxGris;
+    private JLabel minGris;
     private JPanel etiquetas;
     public int ix;
     public int iy;
@@ -59,7 +61,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         lValorColor = new JLabel("valor de gris: ");
         lPos = new JLabel("x: y: ");
         etiquetas = new JPanel();
-        etiquetas.setLayout(new GridLayout(3,2));
+        etiquetas.setLayout(new GridLayout(4,2));
         
         //indicamos tamaño de la ventana segun la imagen
         this.setSize(img.getWidth() + 6, img.getHeight() + lValorColor.getHeight() + 50);
@@ -75,7 +77,9 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         alto = new JLabel("Largo: " + imagen.getHeight());
         ancho = new JLabel("Ancho: " + imagen.getWidth());
         tam_img = new JLabel("Tamaño imagen: " +imagen.getSize());
-
+        //maxGris = new JLabel("Gris max: " + imagen.getGris(true)):
+        //minGris = new JLabel("Gris min: " + imagen.getGris(false)):
+        
         //cargando imagen en el lienzo    
         lienzo = new JLienzo(img, this);
 

@@ -504,6 +504,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
 
         int b = bc.get_sliderBrillo();
         int c = bc.get_sliderContraste();
+        
+        bc.set_infBrillo(b);  bc.set_infContraste(c);
 
         imagenes.get(getIndiceVentana()).ByC(b, c, false); // 0 para n omodificar la imagen del frame
     }

@@ -31,16 +31,29 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         lBrillo = new JLabel(" ");
         lContraste = new JLabel(" ");
         
+        brilloPanel.add(lBrillo);
+        contrastePanel.add(lContraste);
+        
         sliderBrillo.addChangeListener(root);
         sliderContraste.addChangeListener(root);
         Aceptar.addActionListener(root);
     }
+    
+    public void set_infBrillo(Integer x){
+        lBrillo.setText(x.toString());
+    }
+    
+    public void set_infContraste(Integer x){
+        lContraste.setText(x.toString());
+    }
 
-    public void set_sliderBrillo(int x) {
+    public void set_sliderBrillo(Integer x) {
+        lBrillo.setText(x.toString());
         sliderBrillo.setValue(x);
     }
 
-    public void set_sliderContraste(int x) {
+    public void set_sliderContraste(Integer x) {
+        lContraste.setText(x.toString());
         sliderContraste.setValue(x);
     }
 
@@ -82,7 +95,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
         getContentPane().add(sliderBrillo);
         sliderBrillo.setBounds(20, 90, 280, 26);
 
-        sliderContraste.setMaximum(255);
+        sliderContraste.setMaximum(127);
         sliderContraste.setToolTipText("");
         sliderContraste.setValue(125);
         getContentPane().add(sliderContraste);
