@@ -236,8 +236,8 @@ public class ImageClass {
         return picture;
     }
     
-    public int getPos(int x, int y){ //Devuelve la posicion de la imagen de coordenadas XY
-        return x*height+y;
+    public int getPos(int col, int fila){ //Devuelve la posicion de la imagen de coordenadas XY
+        return col*height+fila;
     }
     
     
@@ -359,15 +359,17 @@ public class ImageClass {
     
     
     public int getEnthropy(){  //Devuelve la entropia de la imagen
-        Double ProbI;
-	Double enthropy = 0.0;
+        double ProbI;
+	double enthropy = 0.0;
+        int [] hist = this.getColorValues();
+        
 	for( int i = 0; i < 256; i++ ) {
-            ProbI = (double) pixels[i] / img_size; // pixels ?? 
+            ProbI = (double) hist[i] / img_size; // pixels ?? 
             if (ProbI > 0.0)
-                enthropy += ProbI * (Math.log(ProbI) / Math.log(2.0));	
+                enthropy += ProbI * (Math.log(ProbI) / Math.log(2));	
         }
 	enthropy *= -1;
-        return enthropy.intValue();
+        return (int)enthropy;
     }
 
     public BufferedImage escalaGrises() {   // Devuelve la imagen en escala de grises
@@ -407,7 +409,7 @@ public class ImageClass {
         return roi;
     }
     
-    public BufferedImage linealTransZones(int n_trans, int[] init_zones, int[] end_zones, int[] A, int[] B){
+    public BufferedImage linealTransZones(int n_trans, int[] init_zones, int[] end_zones, double[] A, double[] B){
     // Aplica transformaciones lineales con parametros A[j] y B[j] según en que rango está su valor de color (init_zobes y end_zones)
     // n_trans es el número de tramos en los que se va a hacer transformación. El valor menor del rango va en init_zone 
     // y el mayor en end_zones.
@@ -415,8 +417,9 @@ public class ImageClass {
             
         for(int i=0;i<256;i++){
             for(int j=0;j<n_trans;j++){
-                if(i > init_zones[j] && i < end_zones[j]){
-                    trans_table[i] = i * A[j] + B[j];
+                if(i >= init_zones[j] && i <= end_zones[j]){
+                    trans_table[i] = (int)Math.round(i * A[j] + B[j]);
+                    System.out.println(i + " " + trans_table[i] + " " + A[j] + " " + B[j] + " " + (i * A[j] + B[j]));
                 }
             }
         }
@@ -555,7 +558,7 @@ public class ImageClass {
     
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
-        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
         for(int i=0;i<w;i++){
             for(int j=0;j<h;j++){
                 Color bwcolor = new Color(pix[getPos(i,j)],pix[getPos(i,j)],pix[getPos(i,j)]);
@@ -578,6 +581,7 @@ public class ImageClass {
 
         for(int i=0;i<img_size;i++){
             newimg[i] = table[pix[i]];
+            //System.out.println(pix[i] + " " + table[pix[i]]);
         }
         return toBuffImg(newimg, height, width);
     }

@@ -69,6 +69,7 @@ public class FrameTransLin extends JFrame {
 
         for (int i = 0; i < num_pnts; i++) {
             val[i] = Integer.parseInt(puntos.get(i).getText());
+            //System.out.println(val[i]);
         }
 
         return val;
