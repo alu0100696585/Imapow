@@ -97,7 +97,7 @@ public class Brillo_Contraste extends javax.swing.JFrame {
 
         sliderContraste.setMaximum(127);
         sliderContraste.setToolTipText("");
-        sliderContraste.setValue(125);
+        sliderContraste.setValue(63);
         getContentPane().add(sliderContraste);
         sliderContraste.setBounds(20, 180, 280, 26);
 

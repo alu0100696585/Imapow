@@ -364,7 +364,7 @@ public class ImageClass {
         int [] hist = this.getColorValues();
         
 	for( int i = 0; i < 256; i++ ) {
-            ProbI = (double) hist[i] / img_size; // pixels ?? 
+            ProbI = (double) hist[i] / img_size; // ColorValues
             if (ProbI > 0.0)
                 enthropy += ProbI * (Math.log(ProbI) / Math.log(2));	
         }
@@ -419,7 +419,7 @@ public class ImageClass {
             for(int j=0;j<n_trans;j++){
                 if(i >= init_zones[j] && i <= end_zones[j]){
                     trans_table[i] = (int)Math.round(i * A[j] + B[j]);
-                    System.out.println(i + " " + trans_table[i] + " " + A[j] + " " + B[j] + " " + (i * A[j] + B[j]));
+                    //System.out.println(i + " " + trans_table[i] + " " + A[j] + " " + B[j] + " " + (i * A[j] + B[j]));
                 }
             }
         }
@@ -498,12 +498,12 @@ public class ImageClass {
     
     
     
-    public BufferedImage gamma(float g){   // Corrección gamma de una imagen
+    public BufferedImage gamma(double g){   // Corrección gamma de una imagen
         int [] trans_table = new int[256];
         double a, b;
         for (int i=0;i<256;i++){
             a = (double)i/255;
-            b = Math.pow(a,(double)g);
+            b = Math.pow(a,g);
             trans_table[i] = (int) (b*255);
         }
         return TRANSFORM(pixels,trans_table);
@@ -514,12 +514,12 @@ public class ImageClass {
         int[] imhisto = this.getAcumulativeValues();
         int[] imhisto2 = im2.getAcumulativeValues();
         
-        float []imh1 = new float[256];
-        float []imh2 = new float[256];
+        double []imh1 = new double[256];
+        double []imh2 = new double[256];
         
         for(int i=0;i<256;i++){
-            imh1[i]=(float)imhisto[i];
-            imh2[i]=(float)imhisto2[i];
+            imh1[i]=(double)imhisto[i];
+            imh2[i]=(double)imhisto2[i];
         }
         int[] trans_table = new int[256];
         
@@ -536,8 +536,8 @@ public class ImageClass {
                 }
                 else if (imh1[i] < imh2[j]){
                     if(j != 0 && j != 255){
-                        float aux = Math.abs(imh1[i] - imh2[j]);
-                        float aux2 = Math.abs(imh1[i] - imh2[j-1]);
+                        double aux = Math.abs(imh1[i] - imh2[j]);
+                        double aux2 = Math.abs(imh1[i] - imh2[j-1]);
                         if(aux < aux2){
                             trans_table[i] = j;
                             break;
