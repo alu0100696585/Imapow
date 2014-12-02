@@ -170,7 +170,19 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         
         return imagen.linealTransZones(ntrans, init, end, A, B);    
     }
+    
+    public BufferedImage mirrorV() {
 
+        return imagen.mirrorVertical();
+
+    }
+
+    public BufferedImage mirrorH() {
+
+        return imagen.mirrorHorizontal();
+
+    }
+    
     @Override
     public void mouseClicked(MouseEvent e) {
     }

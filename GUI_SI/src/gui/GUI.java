@@ -84,6 +84,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         jMenu1 = new javax.swing.JMenu();
         Brillo_Contraste = new javax.swing.JMenuItem();
         TransLin = new javax.swing.JMenuItem();
+        Rotaciones = new javax.swing.JMenu();
+        espejoVertical = new javax.swing.JMenuItem();
+        espejoHorizontal = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -218,6 +221,26 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         jMenu1.add(TransLin);
 
         menu_gui.add(jMenu1);
+
+        Rotaciones.setText("Rotaciones");
+
+        espejoVertical.setText("Espejo Vertical");
+        espejoVertical.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                espejoVerticalActionPerformed(evt);
+            }
+        });
+        Rotaciones.add(espejoVertical);
+
+        espejoHorizontal.setText("Espejo Horizontal");
+        espejoHorizontal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                espejoHorizontalActionPerformed(evt);
+            }
+        });
+        Rotaciones.add(espejoHorizontal);
+
+        menu_gui.add(Rotaciones);
 
         setJMenuBar(menu_gui);
 
@@ -443,6 +466,34 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         
     }//GEN-LAST:event_imagenDifActionPerformed
 
+    private void espejoVerticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_espejoVerticalActionPerformed
+       
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).mirrorV(), this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
+        
+    }//GEN-LAST:event_espejoVerticalActionPerformed
+
+    private void espejoHorizontalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_espejoHorizontalActionPerformed
+      
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).mirrorH(), this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
+        
+    }//GEN-LAST:event_espejoHorizontalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -477,9 +528,12 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem HistogramaValAbsol;
     private javax.swing.JMenuItem HistogramaValAcu;
     private javax.swing.JMenuItem Recortar;
+    private javax.swing.JMenu Rotaciones;
     private javax.swing.JMenuItem Salir;
     private javax.swing.JMenuItem TransLin;
     private javax.swing.JMenu Ver;
+    private javax.swing.JMenuItem espejoHorizontal;
+    private javax.swing.JMenuItem espejoVertical;
     private javax.swing.JMenuItem imagenDif;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;

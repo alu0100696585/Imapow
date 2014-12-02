@@ -453,8 +453,6 @@ public class ImageClass {
         int [] acHisto = this.getAcumulativeValues();
         
         for (int i=0;i<256;i++){
-            trans_table[i] = Math.max(0, Math.round((256/img_size)*acHisto[i])-1);
-            //System.out.println(trans_table[i]);
             trans_table[i] = (int) Math.max(0, Math.round(((double)256/(double)img_size)*acHisto[i])-1);
             //System.out.println(trans_table[i]);
         }
@@ -556,6 +554,44 @@ public class ImageClass {
         return TRANSFORM(pixels, trans_table);
     }
     
+    public BufferedImage mirrorVertical(){
+        
+        BufferedImage newimg = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        
+        int h = height;
+        int jfin = h - 1;
+        
+        for(int i = 0; i<width; i++){
+            for(int j = 0; j<height; j++){
+                newimg.setRGB(i, jfin, picture.getRGB(i, j));
+                jfin--;
+            }
+            jfin = h - 1;
+        }
+        
+        return newimg;
+    }
+    
+    public BufferedImage mirrorHorizontal(){
+        
+        BufferedImage newimg = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        
+        int w = width;
+        int h = height;
+        
+        int ifin = w -1;
+        
+        for(int i = 0; i<width; i++){
+            for(int j = 0; j<height; j++){
+                newimg.setRGB(ifin, j, picture.getRGB(i, j));
+           }
+            ifin--;
+        }
+        
+        return newimg;
+    }
+    
+
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
