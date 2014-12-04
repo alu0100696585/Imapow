@@ -94,7 +94,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         etiquetas.add(minGris);
         
         //indicamos tamaño de la ventana segun la imagen
-        this.setSize(img.getWidth() + 6, img.getHeight() + etiquetas.getHeight() + 100);
+        this.setSize(img.getWidth() + 6, img.getHeight() + etiquetas.getHeight() + 50);
 
         
         this.add(etiquetas, BorderLayout.SOUTH);

@@ -88,6 +88,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         espejoVertical = new javax.swing.JMenuItem();
         espejoHorizontal = new javax.swing.JMenuItem();
         traspuesta = new javax.swing.JMenuItem();
+        multipo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -248,6 +249,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         Rotaciones.add(traspuesta);
+
+        multipo.setText("Múltipo");
+        multipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                multipoActionPerformed(evt);
+            }
+        });
+        Rotaciones.add(multipo);
 
         menu_gui.add(Rotaciones);
 
@@ -517,6 +526,39 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
        
     }//GEN-LAST:event_traspuestaActionPerformed
 
+    private void multipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipoActionPerformed
+      
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            
+            String g = JOptionPane.showInputDialog("Ingrese rotación 90º, 180º 0 270º: ");
+            
+            if ("90".equals(g) || "90º".equals(g)) {               
+                ImageFrame aux = new ImageFrame(imagenes.get(getIndiceVentana()).trasp(), this);
+                aux.setVisible(false);
+
+                imagenes.add(new ImageFrame(aux.mirrorH(), this));
+                imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            }
+            else if ("180".equals(g) || "180º".equals(g)) {              
+                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).mirrorV(), this));
+                imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);                
+            }
+            else if ("270".equals(g) || "270º".equals(g)) {
+                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).trasp(), this));
+                imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Rotacion invalida",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+       
+    }//GEN-LAST:event_multipoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -560,6 +602,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem imagenDif;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
+    private javax.swing.JMenuItem multipo;
     private javax.swing.JMenuItem traspuesta;
     // End of variables declaration//GEN-END:variables
 
