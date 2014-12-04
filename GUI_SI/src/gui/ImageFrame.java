@@ -62,9 +62,6 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         lPos = new JLabel("x: y: ");
         etiquetas = new JPanel();
         etiquetas.setLayout(new GridLayout(4,2));
-        
-        //indicamos tamaño de la ventana segun la imagen
-        this.setSize(img.getWidth() + 6, img.getHeight() + lValorColor.getHeight() + 50);
 
         //inicializacion del indice
         index = -1;
@@ -76,7 +73,7 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         entrop = new JLabel("Entropía: " + imagen.getEnthropy());
         alto = new JLabel("Largo: " + imagen.getHeight());
         ancho = new JLabel("Ancho: " + imagen.getWidth());
-        tam_img = new JLabel("Tamaño imagen: " +imagen.getSize());
+        tam_img = new JLabel("Size: " +imagen.getSize());
         maxGris = new JLabel("Gris max: " + imagen.getGris(true));
         minGris = new JLabel("Gris min: " + imagen.getGris(false));
         
@@ -95,9 +92,17 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
         etiquetas.add(ancho);
         etiquetas.add(maxGris);
         etiquetas.add(minGris);
+        
+        //indicamos tamaño de la ventana segun la imagen
+        this.setSize(img.getWidth() + 6, img.getHeight() + etiquetas.getHeight() + 100);
+
+        
         this.add(etiquetas, BorderLayout.SOUTH);
+        
 
         lienzo.repaint();
+        
+
         
         //ventana visible
         this.setVisible(true);
@@ -180,6 +185,12 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
     public BufferedImage mirrorH() {
 
         return imagen.mirrorHorizontal();
+
+    }
+    
+        public BufferedImage trasp() {
+
+        return imagen.traspuesta();
 
     }
     

@@ -590,7 +590,18 @@ public class ImageClass {
         
         return newimg;
     }
-    
+    public BufferedImage traspuesta(){
+        
+        BufferedImage newimg = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        
+        for(int i = 0; i<width; i++){
+            for(int j = 0; j<height; j++){
+                newimg.setRGB(j, i, picture.getRGB(i, j));
+           }
+        }
+        
+        return newimg;
+    }
 
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){

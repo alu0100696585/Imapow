@@ -87,6 +87,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         Rotaciones = new javax.swing.JMenu();
         espejoVertical = new javax.swing.JMenuItem();
         espejoHorizontal = new javax.swing.JMenuItem();
+        traspuesta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Imapow");
@@ -239,6 +240,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         Rotaciones.add(espejoHorizontal);
+
+        traspuesta.setText("Traspuesta");
+        traspuesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                traspuestaActionPerformed(evt);
+            }
+        });
+        Rotaciones.add(traspuesta);
 
         menu_gui.add(Rotaciones);
 
@@ -494,6 +503,20 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         
     }//GEN-LAST:event_espejoHorizontalActionPerformed
 
+    private void traspuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_traspuestaActionPerformed
+      
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).trasp(), this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
+       
+    }//GEN-LAST:event_traspuestaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -537,6 +560,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem imagenDif;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
+    private javax.swing.JMenuItem traspuesta;
     // End of variables declaration//GEN-END:variables
 
     private boolean inicializando = false;
