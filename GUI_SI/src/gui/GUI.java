@@ -84,6 +84,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         jMenu1 = new javax.swing.JMenu();
         Brillo_Contraste = new javax.swing.JMenuItem();
         TransLin = new javax.swing.JMenuItem();
+        Escalado = new javax.swing.JMenuItem();
+        Escalado2 = new javax.swing.JMenuItem();
         Rotaciones = new javax.swing.JMenu();
         espejoVertical = new javax.swing.JMenuItem();
         espejoHorizontal = new javax.swing.JMenuItem();
@@ -221,6 +223,22 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         jMenu1.add(TransLin);
+
+        Escalado.setText("Escalado Vecino + Proximo");
+        Escalado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EscaladoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Escalado);
+
+        Escalado2.setText("Escalado Media");
+        Escalado2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Escalado2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Escalado2);
 
         menu_gui.add(jMenu1);
 
@@ -559,6 +577,34 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
        
     }//GEN-LAST:event_multipoActionPerformed
 
+    private void EscaladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscaladoActionPerformed
+        if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            String g = JOptionPane.showInputDialog("Ingrese la ampliacion: ");
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(g),false), this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
+    }//GEN-LAST:event_EscaladoActionPerformed
+
+    private void Escalado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Escalado2ActionPerformed
+            if (imageActual == null) {
+            JOptionPane.showMessageDialog(null, "No existe una imagen cargada previamente, por favor, cargue una en Archivo->Cargsr..",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+
+            String g = JOptionPane.showInputDialog("Ingrese la ampliacion: ");
+
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(g),true), this));
+            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+        }
+    }//GEN-LAST:event_Escalado2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -587,6 +633,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenuItem Ecualizar;
     private javax.swing.JMenu Edicion;
     private javax.swing.JMenuItem EscalaGrises;
+    private javax.swing.JMenuItem Escalado;
+    private javax.swing.JMenuItem Escalado2;
     private javax.swing.JMenuItem Gamma;
     private javax.swing.JMenuItem Guardar;
     private javax.swing.JMenuItem HistEspecific;

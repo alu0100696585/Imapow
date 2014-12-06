@@ -602,6 +602,41 @@ public class ImageClass {
         
         return newimg;
     }
+    
+    public BufferedImage Scale(float inc, boolean mode){
+        
+        //Resize de la imagen resultado
+        int newWidth =(int)width*Math.round(inc); 
+        int newHeight=(int)height*Math.round(inc);
+        BufferedImage newimg = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB );
+        
+        if (mode == false){ //False equivale al metodo de interpolacion de vecino mas proximo
+            for(int i = 0; i<width; i++){
+                for(int j = 0; j<height; j++){
+                    if(inc < 1){
+                        //OPERACION DE REDUCCION
+                    }
+                    else{
+                        //OPERACION DE AMPLIACION
+                    }
+               }
+            }
+        }
+        if (mode == true){ //True equivale al metodo de interpolacion de la media
+            for(int i = 0; i<width; i++){
+                for(int j = 0; j<height; j++){
+                    if(inc < 1){
+                        //OPERACION DE REDUCCION
+                    }
+                    else{
+                        //OPERACION DE AMPLIACION
+                    }
+               }
+            }
+        }
+        
+        return newimg;
+    }
 
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
