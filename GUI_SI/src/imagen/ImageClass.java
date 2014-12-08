@@ -603,57 +603,54 @@ public class ImageClass {
         return newimg;
     }
     
-    public BufferedImage Scale(float inc, boolean mode){
+    public BufferedImage Scale(float incH, float incV, boolean mode){
     //Aumenta o reduce la imagen a la escala inc. Vecino + proximo (mode=0). Media (mode=1)
         //Resize de la imagen resultado
-        int newWidth =Math.round(width * inc); 
-        int newHeight=Math.round(height * inc);
-        BufferedImage newimg = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB );
+        int newWidth =Math.round(width * incH); 
+        int newHeight=Math.round(height * incV);
+        BufferedImage newimg = new BufferedImage(newWidth,height,BufferedImage.TYPE_INT_RGB);
+        BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB);
         
         if (mode == false){ //False equivale al metodo de interpolacion de vecino mas proximo
             for(int i = 0; i<width; i++){
                 for(int j = 0; j<height; j++){
-                    if(inc < 1){
-                        //OPERACION DE REDUCCION
-                        //TO-DO
-                    }
-                    else{
-                        //OPERACION DE AUMENTO
-                        if(Math.round(i%inc) == 0 && Math.round(j%inc) == 0){ //Si el pixel tiene un valor real en la img original
-                            newimg.setRGB(Math.round(i*inc), Math.round(j*inc), picture.getRGB(i, j));
+                    if(incH >= 1){
+                        if(i%Math.round(incH) == 0){
+                            newimg.setRGB(Math.round(i*incH), j, picture.getRGB(i, j));
                         }
+                        else newimg.setRGB(Math.round(i*incH), j, newimg.getRGB(i-1, j));
                     }
+                    //else /*reducir*/ 
                }
             }
+            
+            for(int i = 0; i<newWidth; i++){
+                for(int j = 0; j<height; j++){
+                    if(incV >= 1){
+                        if(j%Math.round(incV) == 0){
+                            newimg2.setRGB(i, Math.round(j*incV), newimg.getRGB(i, j));
+                        }
+                        else newimg2.setRGB(i, Math.round(j*incV), newimg.getRGB(i, j-1));
+                    }
+                    //else /*reducir*/ 
+               }
+            }
+            
         
-        //INTERPOLACION VECINO MAS PROXIMO
+/*        //INTERPOLACION VECINO MAS PROXIMO
             for(int i = 0; i<newWidth; i++){
                  for(int j = 0; j<newHeight; j++){
-                    if(inc > 1 && !(Math.round(i%inc) == 0 || Math.round(j%inc) == 0)){ //CAMBIAR ESTO
+                    if(inc > 1 && !(Math.round(i%inc) == 0 || Math.round(j%inc) == 0)){ 
                         //System.out.println("ENTRA");
                         if(j==0){
                             newimg.setRGB(i, j, newimg.getRGB(i,j-1));
                         }
-                        else if(i!=0) newimg.setRGB(i, j, newimg.getRGB(i-1,j));
+                        else newimg.setRGB(i, j, newimg.getRGB(i-1,j));
                         }
-                }
+                }*/
             }
-        }
-        /***************/
-        if (mode == true){ //True equivale al metodo de interpolacion de la media
-            for(int i = 0; i<width; i++){
-                for(int j = 0; j<height; j++){
-                    if(inc < 1){
-                        //OPERACION DE REDUCCION
-                    }
-                    else{
-                        //OPERACION DE AMPLIACION
-                    }
-               }
-            }
-        }
-        
-        return newimg;
+ 
+        return newimg2;
     }
 
     

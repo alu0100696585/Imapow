@@ -584,9 +584,9 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         }
         else {
 
-            String g = JOptionPane.showInputDialog("Ingrese la ampliacion: ");
-
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(g),false), this));
+            String h = JOptionPane.showInputDialog("Ingrese la ampliacion horizontal: ");
+            String v = JOptionPane.showInputDialog("Ingrese la ampliacion vertical: ");
+            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(h),Float.parseFloat(v),false), this));
             imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_EscaladoActionPerformed
@@ -598,10 +598,11 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         }
         else {
 
-            String g = JOptionPane.showInputDialog("Ingrese la ampliacion: ");
+            String h = JOptionPane.showInputDialog("Ingrese la ampliacion horizontal: ");
+            String v = JOptionPane.showInputDialog("Ingrese la ampliacion vertical: ");
 
-            imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(g),true), this));
-            imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+           imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).getImagen().Scale(Float.parseFloat(h),Float.parseFloat(v),true), this));
+           imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
         }
     }//GEN-LAST:event_Escalado2ActionPerformed
 
