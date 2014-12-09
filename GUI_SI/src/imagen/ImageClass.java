@@ -612,43 +612,31 @@ public class ImageClass {
         BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB);
         
         if (mode == false){ //False equivale al metodo de interpolacion de vecino mas proximo
-            for(int i = 0; i<width; i++){
-                for(int j = 0; j<height; j++){
+            for(int j = 0; j<height; j++){
+                for(int i = 0; i<newWidth; i++){
                     if(incH >= 1){
-                        if(i%Math.round(incH) == 0){
-                            newimg.setRGB(Math.round(i*incH), j, picture.getRGB(i, j));
+                        if((int)Math.round(i/incH) <= width && (int)Math.round(i%incH)==0){
+                            newimg.setRGB(i, j, picture.getRGB((int)Math.round(i/incH), j));
                         }
-                        else newimg.setRGB(Math.round(i*incH), j, newimg.getRGB(i-1, j));
+                        else newimg.setRGB(i, j, newimg.getRGB(i-1, j));
                     }
-                    //else /*reducir*/ 
+                    //ELSE REDUCIR
                }
             }
+
             
-            for(int i = 0; i<newWidth; i++){
-                for(int j = 0; j<height; j++){
+          for(int i = 0; i<newWidth; i++){
+                for(int j = 0; j<newHeight; j++){
                     if(incV >= 1){
-                        if(j%Math.round(incV) == 0){
-                            newimg2.setRGB(i, Math.round(j*incV), newimg.getRGB(i, j));
+                       if((int)Math.round(j/incV) <= height && (int)Math.round(j%incV)==0){
+                            newimg2.setRGB(i, j, newimg.getRGB(i,(int)Math.round(j/incV)));
                         }
-                        else newimg2.setRGB(i, Math.round(j*incV), newimg.getRGB(i, j-1));
+                        else newimg2.setRGB(i, j, newimg2.getRGB(i, j-1));
                     }
-                    //else /*reducir*/ 
+                    //ELSE REDUCIR
                }
             }
-            
-        
-/*        //INTERPOLACION VECINO MAS PROXIMO
-            for(int i = 0; i<newWidth; i++){
-                 for(int j = 0; j<newHeight; j++){
-                    if(inc > 1 && !(Math.round(i%inc) == 0 || Math.round(j%inc) == 0)){ 
-                        //System.out.println("ENTRA");
-                        if(j==0){
-                            newimg.setRGB(i, j, newimg.getRGB(i,j-1));
-                        }
-                        else newimg.setRGB(i, j, newimg.getRGB(i-1,j));
-                        }
-                }*/
-            }
+        }
  
         return newimg2;
     }
