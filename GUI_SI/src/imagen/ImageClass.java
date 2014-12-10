@@ -608,9 +608,10 @@ public class ImageClass {
         //Resize de la imagen resultado
         int newWidth =Math.round(width * incH); 
         int newHeight=Math.round(height * incV);
-        BufferedImage newimg = new BufferedImage(newWidth,height,BufferedImage.TYPE_INT_RGB);
-        BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB);
+        BufferedImage newimg = new BufferedImage(newWidth,height,BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_BYTE_GRAY);
         
+        /*-------------------------VECINO MAS PROXIMO-------------------------------------------*/
         if (mode == false){ //False equivale al metodo de interpolacion de vecino mas proximo
             for(int j = 0; j<height; j++){
                 for(int i = 0; i<newWidth; i++){
@@ -619,6 +620,55 @@ public class ImageClass {
                             newimg.setRGB(i, j, picture.getRGB((int)Math.round(i/incH), j));
                         }
                         else newimg.setRGB(i, j, newimg.getRGB(i-1, j));
+                    }
+                    else{
+                         newimg.setRGB(i, j, picture.getRGB((int)Math.round(i/incH), j));
+                    }
+               }
+            }
+
+            
+          for(int i = 0; i<newWidth; i++){
+                for(int j = 0; j<newHeight; j++){
+                    if(incV >= 1){
+                       if((int)Math.round(j/incV) <= height && (int)Math.round(j%incV)==0){
+                            newimg2.setRGB(i, j, newimg.getRGB(i,(int)Math.round(j/incV)));
+                        }
+                        else newimg2.setRGB(i, j, newimg2.getRGB(i, j-1));
+                    }
+                     else{
+                         newimg2.setRGB(i, j, newimg.getRGB(i,(int)Math.round(j/incV)));
+                    }
+               }
+            }
+        }
+        /*-------------------------------BILINEAL------------------------------------------------*/
+        if (mode == true){ //True equivale al metodo de interpolacion de vecino mas proximo
+            for(int j = 0; j<height; j++){
+                for(int i = 0; i<newWidth; i++){
+                    if(incH >= 1){
+                        if((int)Math.round(i/incH) <= width && (int)Math.round(i%incH)==0){
+                            newimg.setRGB(i, j, picture.getRGB((int)Math.round(i/incH), j));
+                        }
+                        else{
+                            //try{
+                            int avg = 0;
+                            int divisor = 0;
+                            if(Math.round(i/incH) > 0) {avg += picture.getRGB((int)Math.round(i/incH)-1, j); divisor++;}
+                            if(Math.round(i/incH) < width-2) {avg += picture.getRGB((int)Math.round(i/incH)+1, j);divisor++;}
+                            if (j > 0) {avg+= picture.getRGB((int)Math.round(i/incH), j-1);divisor++;}
+                            if (j < height-2) {avg += picture.getRGB((int)Math.round(i/incH), j+1); divisor++;}
+                            
+                            
+                            newimg.setRGB(i, j, (int)Math.round(avg/divisor));
+                           // }
+                           /* catch(Exception e){
+                                System.out.println("Ancho=" + width);
+                                System.out.println("Alto=" + height);
+                                System.out.println("I=" + (int)Math.round(i/incH));
+                                System.out.println("J=" + j);
+                            }*/
+                        } 
                     }
                     //ELSE REDUCIR
                }
