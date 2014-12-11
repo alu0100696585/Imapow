@@ -232,7 +232,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         });
         jMenu1.add(Escalado);
 
-        Escalado2.setText("Escalado Media");
+        Escalado2.setText("Escalado Bilineal");
         Escalado2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Escalado2ActionPerformed(evt);

@@ -152,7 +152,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="Escalado2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Escalado Media"/>
+                <Property name="text" type="java.lang.String" value="Escalado Bilineal"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Escalado2ActionPerformed"/>

@@ -608,8 +608,8 @@ public class ImageClass {
         //Resize de la imagen resultado
         int newWidth =Math.round(width * incH); 
         int newHeight=Math.round(height * incV);
-        BufferedImage newimg = new BufferedImage(newWidth,height,BufferedImage.TYPE_BYTE_GRAY);
-        BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage newimg = new BufferedImage(newWidth,height,BufferedImage.TYPE_INT_RGB);
+        BufferedImage newimg2 = new BufferedImage(newWidth,newHeight,BufferedImage.TYPE_INT_RGB);
         
         /*-------------------------VECINO MAS PROXIMO-------------------------------------------*/
         if (mode == false){ //False equivale al metodo de interpolacion de vecino mas proximo
@@ -646,44 +646,120 @@ public class ImageClass {
         if (mode == true){ //True equivale al metodo de interpolacion de vecino mas proximo
             for(int j = 0; j<height; j++){
                 for(int i = 0; i<newWidth; i++){
-                    if(incH >= 1){
                         if((int)Math.round(i/incH) <= width && (int)Math.round(i%incH)==0){
                             newimg.setRGB(i, j, picture.getRGB((int)Math.round(i/incH), j));
                         }
                         else{
-                            //try{
                             int avg = 0;
                             int divisor = 0;
-                            if(Math.round(i/incH) > 0) {avg += picture.getRGB((int)Math.round(i/incH)-1, j); divisor++;}
-                            if(Math.round(i/incH) < width-2) {avg += picture.getRGB((int)Math.round(i/incH)+1, j);divisor++;}
-                            if (j > 0) {avg+= picture.getRGB((int)Math.round(i/incH), j-1);divisor++;}
-                            if (j < height-2) {avg += picture.getRGB((int)Math.round(i/incH), j+1); divisor++;}
+
+                            if(i > 0){
+                                int srcPixel = newimg.getRGB(i-1, j);                
+   
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            if(i < width-2){
+                                int srcPixel = picture.getRGB((int)Math.round((i-incH)/incH)+1, j);                
+   
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            if (j > 0) {
+                                int srcPixel = newimg.getRGB(i, j-1);
+                                
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            if (j < height-2) {
+                                int srcPixel = picture.getRGB((int)Math.round((i-incH)/incH), j+1);
+                                
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
                             
-                            
-                            newimg.setRGB(i, j, (int)Math.round(avg/divisor));
-                           // }
-                           /* catch(Exception e){
-                                System.out.println("Ancho=" + width);
-                                System.out.println("Alto=" + height);
-                                System.out.println("I=" + (int)Math.round(i/incH));
-                                System.out.println("J=" + j);
-                            }*/
+                            Color c = new Color(Math.round(avg/divisor),Math.round(avg/divisor),Math.round(avg/divisor));
+                            newimg.setRGB(i, j, c.getRGB());
                         } 
-                    }
-                    //ELSE REDUCIR
                }
             }
 
             
           for(int i = 0; i<newWidth; i++){
                 for(int j = 0; j<newHeight; j++){
-                    if(incV >= 1){
                        if((int)Math.round(j/incV) <= height && (int)Math.round(j%incV)==0){
                             newimg2.setRGB(i, j, newimg.getRGB(i,(int)Math.round(j/incV)));
                         }
-                        else newimg2.setRGB(i, j, newimg2.getRGB(i, j-1));
-                    }
-                    //ELSE REDUCIR
+                        else{
+                            int avg = 0;
+                            int divisor = 0;
+
+                            if(j > 0){
+                                int srcPixel = newimg2.getRGB(i, j-1);                
+   
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            
+                            if (j < height-2) {
+                                int srcPixel = newimg.getRGB(i, (int)Math.round((j-incV)/incV)+1);
+                                
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            
+                            if (i > 0) {
+                                int srcPixel = newimg2.getRGB(i-1, j);
+                                
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            
+                            if(i < newWidth-2){
+                                int srcPixel = newimg.getRGB(i+1,(int)Math.round((j-incV)/incV));                
+   
+                                int r = (0xff & (srcPixel >> 16));  
+                                int g = (0xff & (srcPixel >> 8));
+                                int b = (0xff & (srcPixel));
+
+                                avg +=(int)(r*0.299 + g*0.587 + b*0.114);
+                                divisor++;
+                            }
+                            
+
+                            
+                            Color c = new Color(Math.round(avg/divisor),Math.round(avg/divisor),Math.round(avg/divisor));
+                            newimg2.setRGB(i, j, c.getRGB());
+                        }
+                       
                }
             }
         }
