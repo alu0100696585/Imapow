@@ -35,7 +35,8 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private int indiceVentana;
     private Brillo_Contraste bc;
     private FrameTransLin tl;
-
+    private RotacionAbsoluta rotAbs;
+    
     public int getIndiceVentana() {
         return indiceVentana;
     }
@@ -86,6 +87,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         TransLin = new javax.swing.JMenuItem();
         Escalado = new javax.swing.JMenuItem();
         Escalado2 = new javax.swing.JMenuItem();
+        rotacionAbsoluta = new javax.swing.JMenuItem();
         Rotaciones = new javax.swing.JMenu();
         espejoVertical = new javax.swing.JMenuItem();
         espejoHorizontal = new javax.swing.JMenuItem();
@@ -239,6 +241,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         });
         jMenu1.add(Escalado2);
+
+        rotacionAbsoluta.setText("Rotación absoluta");
+        rotacionAbsoluta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rotacionAbsolutaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(rotacionAbsoluta);
 
         menu_gui.add(jMenu1);
 
@@ -606,6 +616,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
         }
     }//GEN-LAST:event_Escalado2ActionPerformed
 
+    private void rotacionAbsolutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotacionAbsolutaActionPerformed
+        // TODO add your handling code here:
+        
+        rotAbs = new RotacionAbsoluta(this);
+        rotAbs.setVisible(true);
+        
+    }//GEN-LAST:event_rotacionAbsolutaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -652,6 +670,7 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menu_gui;
     private javax.swing.JMenuItem multipo;
+    private javax.swing.JMenuItem rotacionAbsoluta;
     private javax.swing.JMenuItem traspuesta;
     // End of variables declaration//GEN-END:variables
 
@@ -717,5 +736,14 @@ public class GUI extends javax.swing.JFrame implements FocusListener, ChangeList
             }
         }
 
+        if (rotAbs != null) {
+            if (rotAbs.getAceptar() == ae.getSource()) {
+                
+                imagenes.add(new ImageFrame(imagenes.get(getIndiceVentana()).rotacionAbsol(rotAbs.getGrados(),rotAbs.getHistogramaAbs(), rotAbs.getHistogramaAc(), rotAbs.getOpcBilineal(), rotAbs.getInterpolacion()), this));
+                imagenes.get(imagenes.size() - 1).setIndex(imagenes.size() - 1);
+                
+            }
+        }
+        
     }
 }

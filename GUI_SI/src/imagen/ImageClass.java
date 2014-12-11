@@ -5,6 +5,8 @@
  */
 package imagen;
 
+import gui.HistogramaVA;
+import gui.HistogramaVAC;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -766,7 +768,125 @@ public class ImageClass {
  
         return newimg2;
     }
+    
+    public BufferedImage generarImg(int largo, int alto, double grados, boolean hs, boolean as, int sumx, int sumy, boolean tipo, boolean interpolacion){
+        int[] hist = new int[256];
+        int[][] marco = new int[alto][2];
+        for (int i = 0; i < alto; i++) {
+            marco[i][0] = largo;
+        }
+        BufferedImage img = picture;
+        BufferedImage nueva = new BufferedImage(largo, alto, BufferedImage.TYPE_INT_RGB);
+        
+        if(!interpolacion){
+            for (int x = 0; x < img.getWidth(); x++) {
+                for (int y = 0; y < img.getHeight(); y++) {
+                    int i = (int) Math.round(x * Math.cos(grados) - y * Math.sin(grados));
+                    int j = (int) Math.round(x * Math.sin(grados) + y * Math.cos(grados));
+                    if (marco[j + sumy][0] > i + sumx) {
+                        marco[j + sumy][0] = i + sumx;
+                    }
+                    if (marco[j + sumy][1] < i + sumx) {
+                        marco[j + sumy][1] = i + sumx;
+                    }
+                    /*
+                     int color = img.getRGB(x, y);
+                     //System.out.println("X " + i + " y " + j ); //debug
+                     nueva.setRGB(i + sumx, j + sumy, color);
+                     */
+                }
+            }
 
+            for (int y = 0; y < alto; y++) {
+                for (int x = 0; x < largo; x++) {
+                    if ((x >= marco[y][0]) && (x <= marco[y][1])) {
+                        int i = x - sumx;
+                        int j = y - sumy;
+                        double Y = ((j * Math.cos(grados) - i * Math.sin(grados)));
+                        double X = ((i + Y * Math.sin(grados)) / Math.cos(grados));
+                        //System.out.println("Valores x: " + X + "   y: " + Y); //debug
+                        Color c;
+                        if (tipo){
+                            c = new Color(bilineal(X, Y, img));
+                        } else {
+                            c = new Color(vecino(X, Y, img));
+                        }
+
+                        hist[c.getRed()]++;
+                        nueva.setRGB(x, y, c.getRGB());
+                    } else {
+                        Color c = new Color(255, 255, 255);
+                        nueva.setRGB(x, y, c.getRGB());
+                    }
+                }
+            }
+            if (hs) {
+                new HistogramaVA(hist,true);
+            }
+        
+        }
+        else{
+            for (int x = 0; x < img.getWidth(); x++){
+                for (int y = 0; y < img.getHeight(); y++){
+                    int i = (int) Math.round(x * Math.cos(grados) - y * Math.sin(grados));
+                    int j = (int) Math.round(x * Math.sin(grados) + y * Math.cos(grados));
+                    nueva.setRGB(i + sumx , j + sumy, img.getRGB(x, y));
+                }
+            }
+        
+        }
+        
+        return nueva;
+    }
+
+    public int vecino(double x, double y, BufferedImage img){
+        double incx = x - ((int) x);
+        double incy = y - ((int) y);
+        int X, Y;
+        if ((1 - incx) > incx) {
+            X = (int) x;
+        } else {
+            X = (int) x + 1;
+        }
+        if ((1 - incy) > incy) {
+            Y = (int) y;
+        } else {
+            Y = (int) y + 1;
+        }
+        if (X >= img.getWidth()) {
+            X = img.getWidth() - 1;
+        }
+        if (Y >= img.getHeight()) {
+            Y = img.getHeight() - 1;
+        }
+        return img.getRGB(X, Y);
+    }
+    
+    public int bilineal(double x, double y, BufferedImage img){
+        int color = 0;
+        if (x >= img.getWidth()-1) {
+            x = img.getWidth() - 1.001;//ajuste error
+        }
+        if (y >= img.getHeight()-1) {
+            y = img.getHeight() - 1.001;//ajuste error
+        }
+        
+        int X = (int) x;
+        int Y = (int) y;
+        
+        double factor = (1 / (((x + 1) - x) * ((y + 1) - y)));
+        color = (int) (factor * (new Color(img.getRGB(X, Y)).getRed() * (X + 1 - x) * (Y + 1 - y))
+                + (new Color(img.getRGB(X + 1, Y)).getRed() * (x - X) * (Y + 1 - y))
+                + (new Color(img.getRGB(X, Y + 1)).getRed() * (X + 1 - x) * (y - Y))
+                + (new Color(img.getRGB(X + 1, Y + 1)).getRed() * (x - X) * (y - Y)));
+        
+        int colorF = new Color(color,color,color).getRGB();
+     
+        
+        
+        return colorF;
+    }
+    
     
     public BufferedImage toBuffImg(int[] pix, int h, int w){
         BufferedImage newimg = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);

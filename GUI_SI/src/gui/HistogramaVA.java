@@ -30,6 +30,20 @@ public class HistogramaVA extends JFrame {
      * @param pixels
      */
     
+    public HistogramaVA(int[] hist, boolean rot){
+        this.setResizable(false);
+        this.setVisible(true);
+        this.setTitle("Histograma");
+        Image icon = new ImageIcon(getClass().getResource("/gui/imapow.png")).getImage();
+        setIconImage(icon);
+        valores = hist;
+        redimensionar();
+        JLabel n_h = new JLabel("0                                                                           255");
+        this.setSize(255 + 6, 255 + n_h.getHeight() + 50); // hay que tener en cuenta el tamaño del label y el tamano por defecto de las ventanas de window
+        this.add(new Grafico(), BorderLayout.CENTER);
+        this.add(n_h, BorderLayout.SOUTH);
+    }
+    
     public HistogramaVA(int[] pixels) {
         this.setResizable(false);
         this.setVisible(true);

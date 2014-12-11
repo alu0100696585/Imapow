@@ -188,9 +188,50 @@ public class ImageFrame extends JFrame implements MouseListener, MouseMotionList
 
     }
     
-        public BufferedImage trasp() {
+    public BufferedImage trasp() {
 
         return imagen.traspuesta();
+    }
+    
+    public BufferedImage rotacionAbsol(double grados,boolean histAbsoluto, boolean histAcumulados, boolean bilineal, boolean interpolacion){
+        
+        BufferedImage img = imagen.get_picture();
+        
+        int[][] coor = new int[4][2];
+        coor[0][1] = coor[1][1] = img.getHeight() - 1;
+        coor[1][0] = coor[3][0] = img.getWidth() - 1;
+        int[][] ncoor = new int[4][2];
+        grados = Math.toRadians(grados);
+        int[] max = new int[2];
+        int[] min = new int[2];
+        for (int i = 0; i < 4; i++) {
+            ncoor[i][0] = (int) Math.round(coor[i][0] * Math.cos(grados) - coor[i][1] * Math.sin(grados));
+            //System.out.println("Coordenada x " + ncoor[i][0]); //debug
+            if (min[0] > ncoor[i][0]) {
+                min[0] = ncoor[i][0];
+            } else {
+                if (max[0] < ncoor[i][0]) {
+                    max[0] = ncoor[i][0];
+                }
+            }
+            ncoor[i][1] = (int) Math.round(coor[i][0] * Math.sin(grados) + coor[i][1] * Math.cos(grados));
+            //System.out.println("Coordenada y " + ncoor[i][1]); //debug
+            if (min[1] > ncoor[i][1]) {
+                min[1] = ncoor[i][1];
+            } else {
+                if (max[1] < ncoor[i][1]) {
+                    max[1] = ncoor[i][1];
+                }
+            }
+        }
+        int largo = max[0] - min[0] + 1;
+        int alto = max[1] - min[1] + 1;
+        int sumx = 0 - min[0];
+        int sumy = 0 - min[1];
+        //System.out.println("Largo " + largo + "  y alto " + alto);//debug
+        //debug //System.out.println("Error x " + sumx + "  Error y " + sumy );
+            
+        return imagen.generarImg(largo, alto, grados, histAbsoluto, histAcumulados, sumx, sumy, bilineal, interpolacion);
 
     }
     
