@@ -87,7 +87,7 @@ public class RotacionAbsoluta extends javax.swing.JFrame {
 
         aceptar.setText("Aceptar");
 
-        noInter.setText("Sin interpolar");
+        noInter.setText("Girar y pintar");
         noInter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noInterActionPerformed(evt);
