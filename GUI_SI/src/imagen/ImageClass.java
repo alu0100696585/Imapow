@@ -892,6 +892,14 @@ public class ImageClass {
                 + (new Color(img.getRGB(X, Y + 1)).getRed() * (X + 1 - x) * (y - Y))
                 + (new Color(img.getRGB(X + 1, Y + 1)).getRed() * (x - X) * (y - Y)));
         
+        if(color > 255){
+            color = 255;
+        }
+        if(color < 0){
+            color = 0;
+        }
+        
+            
         int colorF = new Color(color,color,color).getRGB();
      
         
