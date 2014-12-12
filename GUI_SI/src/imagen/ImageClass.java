@@ -771,6 +771,7 @@ public class ImageClass {
     
     public BufferedImage generarImg(int largo, int alto, double grados, boolean hs, boolean as, int sumx, int sumy, boolean tipo, boolean interpolacion){
         int[] hist = new int[256];
+        int[] histAC = new int[256];
         int[][] marco = new int[alto][2];
         for (int i = 0; i < alto; i++) {
             marco[i][0] = largo;
@@ -820,8 +821,19 @@ public class ImageClass {
                     }
                 }
             }
+            
+            for (int i = 0; i < hist.length; i++) {
+                if (i == 0)
+                    histAC[i] = hist[0];
+                else
+                    histAC[i] = (hist[i] + histAC[i-1]);
+            }
+            
             if (hs) {
                 new HistogramaVA(hist,true);
+            }
+            if (as) {
+                new HistogramaVAC(histAC,true);
             }
         
         }
@@ -833,7 +845,7 @@ public class ImageClass {
                     nueva.setRGB(i + sumx , j + sumy, img.getRGB(x, y));
                 }
             }
-        
+            
         }
         
         return nueva;
