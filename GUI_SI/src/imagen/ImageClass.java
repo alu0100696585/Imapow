@@ -594,7 +594,7 @@ public class ImageClass {
     }
     public BufferedImage traspuesta(){
         
-        BufferedImage newimg = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        BufferedImage newimg = new BufferedImage(height,width,BufferedImage.TYPE_INT_RGB);
         
         for(int i = 0; i<width; i++){
             for(int j = 0; j<height; j++){
