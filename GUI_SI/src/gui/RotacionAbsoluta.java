@@ -74,18 +74,8 @@ public class RotacionAbsoluta extends javax.swing.JFrame {
         jLabel1.setText("Interpolación");
 
         opcVecino.setText("Vecino");
-        opcVecino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcVecinoActionPerformed(evt);
-            }
-        });
 
         opcBilineal.setText("Bilineal");
-        opcBilineal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcBilinealActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Grados");
 
@@ -160,21 +150,7 @@ public class RotacionAbsoluta extends javax.swing.JFrame {
 
     private void noInterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noInterActionPerformed
         // TODO add your handling code here:
-        opcBilineal.setSelected(false);
-        opcVecino.setSelected(false);
     }//GEN-LAST:event_noInterActionPerformed
-
-    private void opcVecinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcVecinoActionPerformed
-        // TODO add your handling code here:
-        opcBilineal.setSelected(false);
-        noInter.setSelected(false);
-    }//GEN-LAST:event_opcVecinoActionPerformed
-
-    private void opcBilinealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcBilinealActionPerformed
-        // TODO add your handling code here:
-        opcVecino.setSelected(false);
-        noInter.setSelected(false);
-    }//GEN-LAST:event_opcBilinealActionPerformed
 
     /**
      * @param args the command line arguments
