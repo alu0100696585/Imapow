@@ -68,6 +68,7 @@ public class RotacionAbsoluta extends javax.swing.JFrame {
         aceptar = new javax.swing.JButton();
         noInter = new javax.swing.JRadioButton();
 
+        setTitle("Rotación absoluta");
         setResizable(false);
 
         jLabel1.setText("Interpolación");
