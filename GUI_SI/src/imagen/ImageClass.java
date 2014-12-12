@@ -790,6 +790,7 @@ public class ImageClass {
                     if (marco[j + sumy][1] < i + sumx) {
                         marco[j + sumy][1] = i + sumx;
                     }
+
                     /*
                      int color = img.getRGB(x, y);
                      //System.out.println("X " + i + " y " + j ); //debug
